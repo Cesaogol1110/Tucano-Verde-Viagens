@@ -25,6 +25,29 @@
       "noites": 7,
       "notificar_email": "patiazevedo@gmail.com",
       "notificar_cc": "cesaogolgpt@gmail.com"
+    },
+    {
+      "id": "sp-rj-abr2026",
+      "ativa": true,
+      "dono": "Cesar",
+      "dono_email": "cesaogolgpt@gmail.com",
+      "criada_em": "2026-04-16",
+      "origem": "São Paulo (CGH)",
+      "origem_codigo": "CGH",
+      "destino": "Rio de Janeiro (SDU)",
+      "destino_codigo": "SDU",
+      "data_ida": "2026-04-18",
+      "data_volta": "2026-04-21",
+      "ida_hora_inicio": "05:00",
+      "ida_hora_fim": "10:00",
+      "volta_hora_inicio": "12:00",
+      "volta_hora_fim": "18:00",
+      "adultos": 2,
+      "criancas_idades": [],
+      "bagagem_despachada": true,
+      "incluir_hotel": false,
+      "noites": 3,
+      "notificar_email": "cesaogolgpt@gmail.com"
     }
   ]
 }
