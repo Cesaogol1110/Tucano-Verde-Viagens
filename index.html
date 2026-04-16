@@ -605,7 +605,16 @@ function removerRota(id) {
   const r = rotasData.rotas.find(x => x.id === id);
   if (!r) return;
   const titulo = r.modo === 'hotel' ? (r.hotel_cidade||r.destino) : `${r.origem} → ${r.destino}`;
-  if (!confirm(`Remover rotina "${titulo}"?\n\nA remoção será processada em até 1 hora.`)) return;
+
+  // Trava: pede e-mail e compara com dono_email
+  const emailDigitado = prompt(`Para remover a rotina "${titulo}", digite o e-mail do dono da rotina:`);
+  if (!emailDigitado) return;
+  if (emailDigitado.trim().toLowerCase() !== (r.dono_email||'').trim().toLowerCase()) {
+    alert('❌ E-mail incorreto.\n\nSomente o dono da rotina pode removê-la.');
+    return;
+  }
+
+  if (!confirm(`Confirma remoção da rotina "${titulo}"?`)) return;
 
   const cmd = `REMOVER ROTINA\nID: ${id}\nRota: ${titulo}\nDono: ${r.dono||'—'}\nEmail: ${r.dono_email||'—'}`;
   const btn = event.target;
