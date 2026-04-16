@@ -501,7 +501,7 @@ function enviarWhats(prefix) {
   window.open(url, '_blank');
 }
 
-const API_URL = 'https://script.google.com/macros/s/AKfycbw6h5KGHqACXluNaCCpKniXhr9LH9mDeX9XYWxd_ufYfE-Qv957Y7_gojYl1gF3PJZi/exec';
+const API_URL = 'https://script.google.com/macros/s/AKfycbyBm-NjS7fdfSV1dy9GEsdM6uzNa4_E5VUFTFSRl8SWFufKf8I6EYSE3Vk7vKbtIlpX/exec';
 
 function enviarEmail(prefix) {
   if (!validarEmail(prefix)) return;
@@ -521,9 +521,9 @@ function enviarEmail(prefix) {
     body: JSON.stringify({ tipo: prefix === 'rot' ? 'rotina' : 'spot', comando: txt })
   })
   .then(() => {
-    btn.innerHTML = '✅ Rotina enviada!';
+    btn.innerHTML = '✅ Rotina criada! Aparece em instantes...';
     btn.style.background = 'var(--brand)';
-    setTimeout(() => { btn.innerHTML = textoOriginal; btn.disabled = false; btn.style.opacity = '1'; }, 4000);
+    setTimeout(() => { location.reload(); }, 90000);
   })
   .catch(() => {
     btn.innerHTML = '❌ Erro — tente novamente';
@@ -618,9 +618,10 @@ function removerRota(id) {
     body: JSON.stringify({ tipo: 'remover', comando: cmd })
   })
   .then(() => {
-    btn.textContent = '✅ Solicitação enviada';
+    btn.textContent = '✅ Removida! Atualizando...';
     btn.style.color = 'var(--brand)';
     btn.style.borderColor = 'var(--brand)';
+    setTimeout(() => { location.reload(); }, 90000);
   })
   .catch(() => {
     btn.textContent = '❌ Erro';
@@ -629,6 +630,9 @@ function removerRota(id) {
 }
 
 renderRotas();
+
+// Auto-refresh: recarrega a cada 2 min pra captar novas rotas/remoções
+setTimeout(function() { location.reload(); }, 120000);
 </script>
 </body>
 </html>
