@@ -6,6 +6,7 @@
       "preco_min_voo": 14815,
       "preco_medio_voo_top5": 15820,
       "preco_min_pacote": null,
+      "preco_min_hotel_noite": null,
       "fonte_min": "Kiwi",
       "companhia": "Avianca",
       "escalas_ida": "1 em BOG",
@@ -14,12 +15,50 @@
       "duracao_volta_min": 810,
       "link": "https://on.kiwi.com/Mjeag9",
       "cambio_eur_brl": 5.89
+    },
+    {
+      "rota_id": "sp-cun-jul2026",
+      "data": "2026-04-16",
+      "preco_min_voo": 13089,
+      "preco_medio_voo_top5": 13676,
+      "preco_min_pacote": 17104,
+      "preco_min_hotel_noite": 2443,
+      "fonte_min": "Lastminute",
+      "companhia": "Avianca",
+      "escalas_ida": "1 em BOG",
+      "escalas_volta": "1 em BOG",
+      "duracao_ida_min": 675,
+      "duracao_volta_min": 635,
+      "link": "https://www.lastminute.ie/msr/route/searching.do?departureAirport=GRU&arrivalAirport=CUN&outboundDay=25&outboundMonthYear=072026&returnDay=01&returnMonthYear=082026&adults=2&childs=2&infants=0",
+      "cambio_eur_brl": 5.95
+    },
+    {
+      "rota_id": "sp-rj-abr2026",
+      "data": "2026-04-16",
+      "preco_min_voo": 17395,
+      "preco_medio_voo_top5": 17509,
+      "preco_min_pacote": null,
+      "preco_min_hotel_noite": null,
+      "fonte_min": "Kiwi",
+      "companhia": "GOL",
+      "escalas_ida": "direto",
+      "escalas_volta": "direto",
+      "duracao_ida_min": 60,
+      "duracao_volta_min": 65,
+      "link": "https://on.kiwi.com/ltiTZG",
+      "cambio_eur_brl": 5.95
     }
   ],
   "minimos_historicos": {
     "sp-cun-jul2026": {
-      "preco_min_voo": 14815,
-      "data_preco_min_voo": "2026-04-15",
+      "preco_min_voo": 13089,
+      "data_preco_min_voo": "2026-04-16",
+      "preco_min_pacote": 17104,
+      "data_preco_min_pacote": "2026-04-16"
+    },
+    "sp-rj-abr2026": {
+      "preco_min_voo": 17395,
+      "data_preco_min_voo": "2026-04-16",
       "preco_min_pacote": null,
       "data_preco_min_pacote": null
     }
