@@ -1,0 +1,28 @@
+{
+  "rotas": [
+    {
+      "id": "sp-cun-jul2026",
+      "ativa": true,
+      "criada_em": "2026-04-15",
+      "origem": "São Paulo (GRU/CGH/VCP)",
+      "origem_codigo": "SAO",
+      "destino": "Cancún",
+      "destino_codigo": "CUN",
+      "data_ida": "2026-07-25",
+      "data_volta": "2026-08-01",
+      "ida_hora_inicio": "05:00",
+      "ida_hora_fim": "12:00",
+      "volta_hora_inicio": "12:00",
+      "volta_hora_fim": "18:00",
+      "adultos": 2,
+      "criancas_idades": [9, 6],
+      "bagagem_despachada": true,
+      "incluir_hotel": true,
+      "hotel_estrelas_min": 4,
+      "hotel_estrelas_max": 5,
+      "noites": 7,
+      "notificar_email": "patiazevedo@gmail.com",
+      "notificar_cc": "cesaogolgpt@gmail.com"
+    }
+  ]
+}

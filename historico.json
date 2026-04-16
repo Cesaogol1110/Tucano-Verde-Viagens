@@ -1,0 +1,27 @@
+{
+  "registros": [
+    {
+      "rota_id": "sp-cun-jul2026",
+      "data": "2026-04-15",
+      "preco_min_voo": 14815,
+      "preco_medio_voo_top5": 15820,
+      "preco_min_pacote": null,
+      "fonte_min": "Kiwi",
+      "companhia": "Avianca",
+      "escalas_ida": "1 em BOG",
+      "escalas_volta": "1 em BOG",
+      "duracao_ida_min": 780,
+      "duracao_volta_min": 810,
+      "link": "https://on.kiwi.com/Mjeag9",
+      "cambio_eur_brl": 5.89
+    }
+  ],
+  "minimos_historicos": {
+    "sp-cun-jul2026": {
+      "preco_min_voo": 14815,
+      "data_preco_min_voo": "2026-04-15",
+      "preco_min_pacote": null,
+      "data_preco_min_pacote": null
+    }
+  }
+}

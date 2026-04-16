@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Tucano Verde Viagens — Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+<style>
+  :root {
+    --bg: #f6f4ef;
+    --surface: #ffffff;
+    --ink: #2A3D35;
+    --muted: #7b8a83;
+    --line: #e5e1d6;
+    --brand: #1B6B4A;
+    --brand-deep: #2A3D35;
+    --brand-soft: #e5f0ea;
+    --accent: #E8734A;
+    --accent-soft: #fbe9e1;
+    --danger: #b94a3e;
+    --shadow: 0 1px 2px rgba(42,61,53,0.04), 0 6px 20px rgba(42,61,53,0.06);
+  }
+  * { box-sizing: border-box; }
+  body { font-family: 'Inter', -apple-system, sans-serif; margin: 0; background: var(--bg); color: var(--ink); font-size: 14px; line-height: 1.5; }
+  .header { background: var(--surface); border-bottom: 1px solid var(--line); padding: 20px 40px; display: flex; align-items: center; justify-content: space-between; }
+  .brand { display: flex; align-items: center; gap: 14px; }
+  .logo { width: 44px; height: 44px; border-radius: 12px; background: linear-gradient(135deg, var(--brand) 0%, var(--brand-deep) 100%); display: flex; align-items: center; justify-content: center; font-size: 24px; box-shadow: var(--shadow); }
+  .brand-name { font-family: 'Fraunces', serif; font-weight: 800; font-size: 22px; letter-spacing: 0.04em; margin: 0; color: var(--brand); line-height: 0.95; }
+  .brand-tag { font-size: 11px; color: var(--muted); margin-top: 8px; letter-spacing: 0.05em; text-transform: uppercase; font-weight: 500; }
+  .logo-svg, .logo-img { flex-shrink: 0; object-fit: contain; max-height: 56px; max-width: 180px; }
+  .wordmark-fallback { display: inline-flex; align-items: baseline; gap: 0; font-family: 'Fraunces', serif; font-weight: 800; font-size: 28px; letter-spacing: -0.01em; line-height: 1; }
+  .wm-t { color: var(--brand-deep); }
+  .wm-v { color: var(--brand); margin-left: 2px; font-style: italic; font-weight: 600; }
+  .logo-img + .brand-name, .logo-img + div + .wordmark-fallback { display: none; }
+  .brand { align-items: center; }
+  .header-right { font-size: 13px; color: var(--muted); }
+  .container { max-width: 1280px; margin: 0 auto; padding: 32px 40px; }
+  h1 { font-family: 'Fraunces', serif; font-weight: 600; font-size: 32px; margin: 0 0 8px; letter-spacing: -0.02em; }
+  h2 { font-family: 'Fraunces', serif; font-weight: 600; font-size: 22px; margin: 0 0 4px; letter-spacing: -0.01em; }
+  h3 { font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin: 28px 0 12px; font-weight: 600; }
+  .lead { color: var(--muted); margin: 0 0 32px; font-size: 15px; }
+  .tabs { display: flex; gap: 4px; margin-bottom: 28px; border-bottom: 1px solid var(--line); }
+  .tab { padding: 12px 20px; cursor: pointer; background: transparent; border: none; border-bottom: 2px solid transparent; color: var(--muted); font-size: 14px; font-weight: 500; font-family: inherit; transition: all 0.15s; }
+  .tab:hover { color: var(--ink); }
+  .tab.active { color: var(--brand); border-bottom-color: var(--brand); font-weight: 600; }
+  .section { display: none; }
+  .section.active { display: block; }
+  .card { background: var(--surface); border-radius: 14px; padding: 28px; margin-bottom: 20px; box-shadow: var(--shadow); border: 1px solid var(--line); }
+  .card.champion { border: 1px solid var(--accent); background: var(--surface); box-shadow: 0 1px 2px rgba(232,115,74,0.08), 0 8px 24px rgba(232,115,74,0.08); }
+  .card-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; margin-bottom: 20px; }
+  .route-title { font-family: 'Fraunces', serif; font-weight: 600; font-size: 22px; margin: 0; letter-spacing: -0.01em; line-height: 1.2; }
+  .route-sub { color: var(--muted); font-size: 13px; margin-top: 6px; }
+  .price-big { font-size: 15px; font-weight: 600; color: var(--accent); line-height: 1.4; }
+  .badge { display: inline-flex; align-items: center; gap: 4px; padding: 4px 10px; border-radius: 999px; font-size: 11px; font-weight: 600; letter-spacing: 0.02em; }
+  .badge-brand { background: var(--brand-soft); color: var(--brand-deep); }
+  .badge-champion { background: var(--accent); color: white; }
+  .badge-muted { background: #f0ede6; color: var(--muted); }
+  .meta-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; margin: 16px 0 20px; }
+  .meta { padding: 14px 16px; background: var(--bg); border-radius: 10px; border: 1px solid var(--line); }
+  .meta-label { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 6px; font-weight: 600; }
+  .meta-value { font-size: 15px; font-weight: 600; color: var(--ink); }
+  table { width: 100%; border-collapse: collapse; margin-top: 8px; font-size: 13px; }
+  th { background: var(--bg); padding: 12px 14px; text-align: left; color: var(--muted); font-weight: 600; font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; border-bottom: 1px solid var(--line); }
+  td { padding: 12px 14px; border-bottom: 1px solid var(--line); color: var(--ink); }
+  tr.highlight-green td { background: var(--brand-soft); }
+  tr.highlight-green td:first-child { border-left: 2px solid var(--brand); }
+  .chart-container { height: 240px; margin-top: 12px; padding: 12px; background: var(--bg); border-radius: 10px; border: 1px solid var(--line); }
+  .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; }
+  .form-grid.two { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
+  label { display: block; font-size: 11px; color: var(--muted); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.06em; font-weight: 600; }
+  input, select, textarea { width: 100%; padding: 11px 12px; border-radius: 8px; border: 1px solid var(--line); background: var(--surface); color: var(--ink); font-size: 14px; font-family: inherit; transition: border-color 0.15s; }
+  input:focus, select:focus { outline: none; border-color: var(--brand); box-shadow: 0 0 0 3px var(--brand-soft); }
+  .checkbox-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 6px; margin-top: 6px; }
+  .checkbox-grid label { display: flex; align-items: center; gap: 8px; background: var(--bg); padding: 8px 12px; border-radius: 8px; cursor: pointer; color: var(--ink); text-transform: none; font-size: 13px; margin: 0; letter-spacing: 0; font-weight: 500; border: 1px solid transparent; }
+  .checkbox-grid label:has(input:checked) { background: var(--brand-soft); border-color: var(--brand); color: var(--brand-deep); }
+  .checkbox-grid input[type=checkbox] { width: auto; margin: 0; accent-color: var(--brand); }
+  .mode-selector { display: flex; gap: 8px; margin-bottom: 24px; flex-wrap: wrap; padding: 4px; background: var(--bg); border-radius: 12px; border: 1px solid var(--line); }
+  .mode-btn { padding: 12px 20px; border-radius: 8px; border: none; background: transparent; color: var(--muted); cursor: pointer; font-size: 14px; font-weight: 600; flex: 1; min-width: 140px; font-family: inherit; transition: all 0.15s; }
+  .mode-btn:hover { color: var(--ink); }
+  .mode-btn.active { background: var(--surface); color: var(--brand); box-shadow: var(--shadow); }
+  button.primary { background: var(--brand); color: white; padding: 14px 28px; border: none; border-radius: 10px; cursor: pointer; font-weight: 600; margin-top: 20px; font-size: 14px; font-family: inherit; letter-spacing: 0.01em; transition: background 0.15s; }
+  button.primary:hover { background: var(--brand-deep); }
+  button.ghost { background: transparent; color: var(--danger); padding: 8px 14px; border: 1px solid var(--line); border-radius: 8px; cursor: pointer; font-size: 12px; font-weight: 500; font-family: inherit; }
+  button.ghost:hover { background: #fdf2f0; border-color: var(--danger); }
+  .command-box { background: var(--bg); border: 1px solid var(--line); border-left: 3px solid var(--brand); padding: 18px; border-radius: 8px; margin-top: 18px; font-family: 'SF Mono', Consolas, monospace; font-size: 12.5px; color: var(--ink); white-space: pre-wrap; line-height: 1.6; }
+  .empty { text-align: center; padding: 60px 20px; color: var(--muted); background: var(--surface); border-radius: 14px; border: 1px dashed var(--line); }
+  a { color: var(--brand); text-decoration: none; font-weight: 500; }
+  a:hover { text-decoration: underline; }
+  .stars { color: var(--accent); letter-spacing: 1px; }
+  .hidden { display: none !important; }
+  .hint { font-size: 11px; color: var(--muted); margin-top: 6px; font-style: italic; }
+  details { background: var(--bg); border-radius: 10px; padding: 14px 18px; margin-top: 12px; border: 1px solid var(--line); }
+  details summary { cursor: pointer; color: var(--brand); font-weight: 600; font-size: 13px; user-select: none; }
+  details[open] summary { margin-bottom: 14px; }
+  .section-title { margin-bottom: 16px; }
+  @media (max-width: 720px) { .header, .container { padding: 20px; } h1 { font-size: 26px; } .mode-btn { min-width: 100px; padding: 10px 14px; font-size: 13px; } }
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="brand">
+    <img class="logo-img" src="logo-tucano-verde.png" alt="Tucano Verde" onerror="this.style.display='none'">
+    <div class="wordmark-fallback">
+      <span class="wm-t">Tucano</span><span class="wm-v">Verde</span>
+    </div>
+
+    <div>
+      <div class="brand-tag">Dashboard · Monitoramento de Viagens</div>
+    </div>
+  </div>
+  <div class="header-right" id="hoje"></div>
+</header>
+
+<div class="container">
+
+<div class="section-title">
+  <h1>Acompanhamento de preços</h1>
+  <p class="lead">Voos, pacotes e hotéis monitorados diariamente. Mínimos históricos em destaque.</p>
+</div>
+
+<div class="tabs">
+  <button class="tab active" onclick="showTab(event,'rotas')">Rotinas monitoradas</button>
+  <button class="tab" onclick="showTab(event,'spot')">Busca spot</button>
+  <button class="tab" onclick="showTab(event,'nova')">Nova rotina</button>
+</div>
+
+<datalist id="aeroportos">
+  <option value="São Paulo — GRU (Guarulhos)"><option value="São Paulo — CGH (Congonhas)"><option value="São Paulo — VCP (Viracopos/Campinas)">
+  <option value="Rio de Janeiro — GIG (Galeão)"><option value="Rio de Janeiro — SDU (Santos Dumont)">
+  <option value="Brasília — BSB"><option value="Belo Horizonte — CNF (Confins)"><option value="Belo Horizonte — PLU (Pampulha)">
+  <option value="Salvador — SSA"><option value="Recife — REC"><option value="Fortaleza — FOR"><option value="Natal — NAT"><option value="Maceió — MCZ"><option value="João Pessoa — JPA"><option value="Aracaju — AJU"><option value="São Luís — SLZ"><option value="Teresina — THE"><option value="Belém — BEL"><option value="Manaus — MAO">
+  <option value="Porto Alegre — POA"><option value="Florianópolis — FLN"><option value="Curitiba — CWB"><option value="Foz do Iguaçu — IGU"><option value="Navegantes — NVT"><option value="Joinville — JOI">
+  <option value="Campo Grande — CGR"><option value="Cuiabá — CGB"><option value="Goiânia — GYN"><option value="Palmas — PMW"><option value="Porto Velho — PVH"><option value="Rio Branco — RBR"><option value="Boa Vista — BVB"><option value="Macapá — MCP">
+  <option value="Vitória — VIX"><option value="Ilhéus — IOS"><option value="Porto Seguro — BPS"><option value="Petrolina — PNZ"><option value="Juazeiro do Norte — JDO"><option value="Jericoacoara — JJD"><option value="Fernando de Noronha — FEN">
+  <option value="Campinas — VCP"><option value="São José do Rio Preto — SJP"><option value="Ribeirão Preto — RAO"><option value="Uberlândia — UDI"><option value="Londrina — LDB"><option value="Maringá — MGF">
+  <option value="Cancún — CUN"><option value="Cidade do México — MEX"><option value="Guadalajara — GDL"><option value="Monterrey — MTY"><option value="Los Cabos — SJD"><option value="Puerto Vallarta — PVR"><option value="Cozumel — CZM">
+  <option value="Miami — MIA"><option value="Orlando — MCO"><option value="Fort Lauderdale — FLL"><option value="Tampa — TPA"><option value="Nova Iorque — JFK"><option value="Nova Iorque — EWR (Newark)"><option value="Nova Iorque — LGA"><option value="Los Angeles — LAX"><option value="São Francisco — SFO"><option value="Las Vegas — LAS"><option value="Chicago — ORD"><option value="Atlanta — ATL"><option value="Dallas — DFW"><option value="Houston — IAH"><option value="Washington — IAD"><option value="Boston — BOS"><option value="Seattle — SEA"><option value="Denver — DEN"><option value="Phoenix — PHX"><option value="San Diego — SAN"><option value="Honolulu — HNL">
+  <option value="Toronto — YYZ"><option value="Vancouver — YVR"><option value="Montreal — YUL">
+  <option value="Buenos Aires — EZE (Ezeiza)"><option value="Buenos Aires — AEP (Aeroparque)"><option value="Córdoba — COR"><option value="Mendoza — MDZ"><option value="Bariloche — BRC"><option value="Ushuaia — USH"><option value="El Calafate — FTE"><option value="Salta — SLA">
+  <option value="Santiago — SCL"><option value="Lima — LIM"><option value="Cuzco — CUZ"><option value="Quito — UIO"><option value="Bogotá — BOG"><option value="Cartagena — CTG"><option value="Medellín — MDE"><option value="Caracas — CCS"><option value="Montevidéu — MVD"><option value="Punta del Este — PDP"><option value="Assunção — ASU"><option value="La Paz — LPB"><option value="Santa Cruz — VVI">
+  <option value="Havana — HAV"><option value="Santo Domingo — SDQ"><option value="Punta Cana — PUJ"><option value="San Juan — SJU"><option value="Nassau — NAS"><option value="Aruba — AUA"><option value="Curaçao — CUR"><option value="Bridgetown — BGI"><option value="Montego Bay — MBJ">
+  <option value="Lisboa — LIS"><option value="Porto — OPO"><option value="Madri — MAD"><option value="Barcelona — BCN"><option value="Málaga — AGP"><option value="Valência — VLC"><option value="Sevilha — SVQ"><option value="Bilbao — BIO">
+  <option value="Paris — CDG"><option value="Paris — ORY"><option value="Nice — NCE"><option value="Lyon — LYS"><option value="Marselha — MRS">
+  <option value="Londres — LHR (Heathrow)"><option value="Londres — LGW (Gatwick)"><option value="Londres — STN (Stansted)"><option value="Londres — LTN"><option value="Manchester — MAN"><option value="Edimburgo — EDI"><option value="Dublin — DUB">
+  <option value="Roma — FCO"><option value="Milão — MXP (Malpensa)"><option value="Milão — LIN (Linate)"><option value="Veneza — VCE"><option value="Nápoles — NAP"><option value="Florença — FLR"><option value="Bolonha — BLQ"><option value="Pisa — PSA"><option value="Catânia — CTA">
+  <option value="Frankfurt — FRA"><option value="Munique — MUC"><option value="Berlim — BER"><option value="Hamburgo — HAM"><option value="Düsseldorf — DUS">
+  <option value="Amsterdã — AMS"><option value="Bruxelas — BRU"><option value="Viena — VIE"><option value="Zurique — ZRH"><option value="Genebra — GVA">
+  <option value="Copenhague — CPH"><option value="Estocolmo — ARN"><option value="Oslo — OSL"><option value="Helsinque — HEL"><option value="Reykjavik — KEF">
+  <option value="Atenas — ATH"><option value="Santorini — JTR"><option value="Mykonos — JMK"><option value="Istambul — IST"><option value="Moscou — SVO"><option value="Praga — PRG"><option value="Budapeste — BUD"><option value="Varsóvia — WAW">
+  <option value="Dubai — DXB"><option value="Abu Dhabi — AUH"><option value="Doha — DOH"><option value="Tel Aviv — TLV"><option value="Amã — AMM"><option value="Cairo — CAI"><option value="Marrakech — RAK"><option value="Casablanca — CMN">
+  <option value="Joanesburgo — JNB"><option value="Cidade do Cabo — CPT"><option value="Nairóbi — NBO">
+  <option value="Tóquio — HND"><option value="Tóquio — NRT"><option value="Osaka — KIX"><option value="Seul — ICN"><option value="Pequim — PEK"><option value="Xangai — PVG"><option value="Hong Kong — HKG"><option value="Taipei — TPE"><option value="Bangkok — BKK"><option value="Singapura — SIN"><option value="Kuala Lumpur — KUL"><option value="Jacarta — CGK"><option value="Manila — MNL"><option value="Delhi — DEL"><option value="Mumbai — BOM"><option value="Maldivas — MLE">
+  <option value="Sydney — SYD"><option value="Melbourne — MEL"><option value="Auckland — AKL">
+</datalist>
+
+<datalist id="cidades-hotel">
+  <option value="Cancún, México"><option value="Playa del Carmen, México"><option value="Tulum, México"><option value="Cidade do México, México"><option value="Cabo San Lucas, México">
+  <option value="Orlando, EUA"><option value="Miami, EUA"><option value="Nova Iorque, EUA"><option value="Las Vegas, EUA"><option value="Los Angeles, EUA"><option value="Honolulu, EUA"><option value="San Francisco, EUA">
+  <option value="Buenos Aires, Argentina"><option value="Bariloche, Argentina"><option value="Mendoza, Argentina"><option value="Santiago, Chile"><option value="Lima, Peru"><option value="Cuzco, Peru"><option value="Cartagena, Colômbia"><option value="Bogotá, Colômbia">
+  <option value="Punta Cana, Rep. Dominicana"><option value="Havana, Cuba"><option value="Aruba"><option value="Nassau, Bahamas"><option value="Montego Bay, Jamaica">
+  <option value="Lisboa, Portugal"><option value="Porto, Portugal"><option value="Algarve, Portugal"><option value="Madeira, Portugal"><option value="Açores, Portugal">
+  <option value="Madri, Espanha"><option value="Barcelona, Espanha"><option value="Ibiza, Espanha"><option value="Maiorca, Espanha"><option value="Sevilha, Espanha">
+  <option value="Paris, França"><option value="Nice, França"><option value="Costa Azul, França">
+  <option value="Londres, Reino Unido"><option value="Roma, Itália"><option value="Veneza, Itália"><option value="Florença, Itália"><option value="Milão, Itália"><option value="Amalfi, Itália"><option value="Toscana, Itália">
+  <option value="Amsterdã, Holanda"><option value="Berlim, Alemanha"><option value="Munique, Alemanha"><option value="Praga, Rep. Tcheca"><option value="Viena, Áustria">
+  <option value="Atenas, Grécia"><option value="Santorini, Grécia"><option value="Mykonos, Grécia"><option value="Istambul, Turquia"><option value="Capadócia, Turquia">
+  <option value="Dubai, Emirados"><option value="Marrakech, Marrocos"><option value="Cairo, Egito">
+  <option value="Tóquio, Japão"><option value="Kyoto, Japão"><option value="Bangkok, Tailândia"><option value="Phuket, Tailândia"><option value="Bali, Indonésia"><option value="Maldivas"><option value="Singapura">
+  <option value="Rio de Janeiro, Brasil"><option value="Búzios, Brasil"><option value="Angra dos Reis, Brasil"><option value="Ilhabela, Brasil"><option value="Gramado, Brasil"><option value="Campos do Jordão, Brasil"><option value="Porto de Galinhas, Brasil"><option value="Maragogi, Brasil"><option value="Jericoacoara, Brasil"><option value="Fernando de Noronha, Brasil"><option value="Morro de São Paulo, Brasil"><option value="Trancoso, Brasil"><option value="Bonito, Brasil">
+</datalist>
+
+<script id="dados-rotas" type="application/json">
+{"rotas":[{"id":"sp-cun-jul2026","ativa":true,"modo":"voo-hotel","criada_em":"2026-04-15","origem":"São Paulo","origem_codigo":"SAO","destino":"Cancún","destino_codigo":"CUN","data_ida":"2026-07-25","data_volta":"2026-08-01","ida_hora_inicio":"05:00","ida_hora_fim":"12:00","volta_hora_inicio":"12:00","volta_hora_fim":"18:00","adultos":2,"criancas_idades":[9,6],"quartos":1,"hotel_estrelas_min":4,"hotel_regime":"all-inclusive","noites":7}]}
+</script>
+<script id="dados-historico" type="application/json">
+{"registros":[{"rota_id":"sp-cun-jul2026","data":"2026-04-15","preco_min_voo":14815,"preco_medio_voo_top5":15820,"preco_min_pacote":null,"preco_min_hotel_noite":null,"fonte_min":"Kiwi","companhia":"Avianca","escalas_ida":"1 em BOG","escalas_volta":"1 em BOG","duracao_ida_min":780,"duracao_volta_min":810,"link":"https://on.kiwi.com/Mjeag9"}],"minimos_historicos":{"sp-cun-jul2026":{"preco_min_voo":14815,"data_preco_min_voo":"2026-04-15"}}}
+</script>
+
+<div id="sec-rotas" class="section active"></div>
+
+<div id="sec-spot" class="section">
+  <div class="card">
+    <h2>Busca spot</h2>
+    <p class="lead" style="margin-bottom:20px">Pesquisa avulsa. Não salva no histórico.</p>
+
+    <div class="mode-selector">
+      <button type="button" class="mode-btn active" data-modo="voo" onclick="setModo(event,'spot','voo')">Só passagem</button>
+      <button type="button" class="mode-btn" data-modo="voo-hotel" onclick="setModo(event,'spot','voo-hotel')">Passagem + Hotel</button>
+      <button type="button" class="mode-btn" data-modo="hotel" onclick="setModo(event,'spot','hotel')">Só hotel</button>
+    </div>
+
+    <div id="spot-voo-block">
+      <h3>Voo</h3>
+      <div class="form-grid">
+        <div><label>Origem</label><input id="spot-origem" list="aeroportos" placeholder="Digite cidade ou IATA"></div>
+        <div><label>Destino</label><input id="spot-destino" list="aeroportos" placeholder="Digite cidade ou IATA"></div>
+        <div><label>Data ida</label><input id="spot-ida" type="date"></div>
+        <div><label>Data volta</label><input id="spot-volta" type="date"></div>
+        <div><label>Adultos</label><input id="spot-adultos" type="number" value="2" min="1" max="9"></div>
+        <div><label>Crianças (idades)</label><input id="spot-criancas" placeholder="9,6"></div>
+        <div><label>Bebês</label><input id="spot-bebes" type="number" value="0" min="0" max="4"></div>
+        <div><label>Classe</label><select id="spot-classe"><option value="economica">Econômica</option><option value="premium">Premium</option><option value="executiva">Executiva</option><option value="primeira">Primeira</option></select></div>
+        <div><label>Hora ida início</label><input id="spot-ida-ini" type="time" value="05:00"></div>
+        <div><label>Hora ida fim</label><input id="spot-ida-fim" type="time" value="12:00"></div>
+        <div><label>Hora volta início</label><input id="spot-volta-ini" type="time" value="12:00"></div>
+        <div><label>Hora volta fim</label><input id="spot-volta-fim" type="time" value="18:00"></div>
+        <div><label>Só diretos</label><select id="spot-direto"><option value="nao">Não</option><option value="sim">Sim</option></select></div>
+        <div><label>Máx. escalas</label><select id="spot-max-escalas"><option value="0">Direto</option><option value="1" selected>1</option><option value="2">2</option><option value="9">Qualquer</option></select></div>
+        <div><label>Bagagem despachada</label><select id="spot-bagagem"><option value="sim" selected>Sim</option><option value="nao">Não</option></select></div>
+        <div><label>Cias preferidas</label><input id="spot-cias-pref" placeholder="LATAM, Avianca"></div>
+        <div><label>Cias evitar</label><input id="spot-cias-evitar" placeholder="GOL"></div>
+      </div>
+    </div>
+
+    <div id="spot-hotel-block" class="hidden">
+      <h3>Hotel</h3>
+      <div class="form-grid">
+        <div><label>Cidade</label><input id="spot-hotel-cidade" list="cidades-hotel" placeholder="Digite a cidade/destino"></div>
+        <div><label>Bairro/Zona</label><input id="spot-hotel-bairro" placeholder="Zona Hotelera"></div>
+        <div><label>Check-in</label><input id="spot-checkin" type="date"></div>
+        <div><label>Check-out</label><input id="spot-checkout" type="date"></div>
+        <div><label>Quartos</label><input id="spot-quartos" type="number" value="1" min="1" max="5"></div>
+        <div><label>Estrelas mínimas</label><select id="spot-estrelas"><option value="2">2★+</option><option value="3">3★+</option><option value="4" selected>4★+</option><option value="5">Só 5★</option></select></div>
+        <div><label>Nota hóspedes</label><select id="spot-nota"><option value="0">Qualquer</option><option value="7">7+</option><option value="8" selected>8+</option><option value="9">9+</option></select></div>
+        <div><label>Tipo</label><select id="spot-tipo" multiple size="5"><option value="hotel" selected>Hotel</option><option value="resort" selected>Resort</option><option value="all-inclusive">All-Inclusive</option><option value="apartamento">Apartamento</option><option value="villa">Villa</option><option value="boutique">Boutique</option><option value="pousada">Pousada</option></select><div class="hint">Ctrl/Cmd + clique p/ múltiplos</div></div>
+        <div><label>Regime</label><select id="spot-regime"><option value="qualquer">Qualquer</option><option value="sem">Sem refeições</option><option value="cafe">Café</option><option value="meia">Meia pensão</option><option value="completa">Pensão completa</option><option value="all-inclusive" selected>All-Inclusive</option></select></div>
+        <div><label>Distância praia</label><select id="spot-praia"><option value="qualquer">Qualquer</option><option value="na-praia">Na praia</option><option value="500m" selected>500m</option><option value="1km">1km</option><option value="3km">3km</option></select></div>
+        <div><label>Preço máx/noite (R$)</label><input id="spot-preco-max" type="number" placeholder="2000"></div>
+        <div><label>Cancelamento grátis</label><select id="spot-cancel"><option value="nao">Não importa</option><option value="sim" selected>Sim</option></select></div>
+        <div><label>Sem pré-pagamento</label><select id="spot-prepago"><option value="nao">Não importa</option><option value="sim">Sim</option></select></div>
+        <div><label>Quarto família</label><select id="spot-familia"><option value="nao">Não importa</option><option value="sim" selected>Sim</option></select></div>
+      </div>
+      <details>
+        <summary>Comodidades</summary>
+        <div class="checkbox-grid" id="spot-comodidades">
+          <label><input type="checkbox" value="piscina" checked> Piscina</label>
+          <label><input type="checkbox" value="piscina-coberta"> Piscina coberta</label>
+          <label><input type="checkbox" value="praia-privativa"> Praia privativa</label>
+          <label><input type="checkbox" value="cafe" checked> Café da manhã</label>
+          <label><input type="checkbox" value="wifi" checked> Wi-Fi grátis</label>
+          <label><input type="checkbox" value="estacionamento"> Estacionamento grátis</label>
+          <label><input type="checkbox" value="academia"> Academia</label>
+          <label><input type="checkbox" value="spa"> Spa</label>
+          <label><input type="checkbox" value="kids-club" checked> Kids club</label>
+          <label><input type="checkbox" value="parque-aquatico"> Parque aquático</label>
+          <label><input type="checkbox" value="atividades-criancas"> Atividades p/ crianças</label>
+          <label><input type="checkbox" value="ar-condicionado" checked> Ar-condicionado</label>
+          <label><input type="checkbox" value="transfer"> Transfer aeroporto</label>
+          <label><input type="checkbox" value="restaurante"> Restaurante</label>
+          <label><input type="checkbox" value="bar"> Bar</label>
+          <label><input type="checkbox" value="acessibilidade"> Acessibilidade</label>
+          <label><input type="checkbox" value="pet-friendly"> Pet friendly</label>
+          <label><input type="checkbox" value="servico-quarto"> Serviço de quarto</label>
+          <label><input type="checkbox" value="cofre"> Cofre</label>
+          <label><input type="checkbox" value="lavanderia"> Lavanderia</label>
+          <label><input type="checkbox" value="equipe-pt"> Equipe fala português</label>
+        </div>
+      </details>
+    </div>
+
+    <button class="primary" onclick="gerarComando('spot')">Gerar comando</button>
+    <div id="spot-cmd" class="command-box" style="display:none"></div>
+  </div>
+</div>
+
+<div id="sec-nova" class="section">
+  <div class="card">
+    <h2>Nova rotina diária</h2>
+    <p class="lead" style="margin-bottom:20px">Cria monitoramento automático das 8h e alimenta o histórico.</p>
+
+    <div class="mode-selector">
+      <button type="button" class="mode-btn active" data-modo="voo" onclick="setModo(event,'rot','voo')">Só passagem</button>
+      <button type="button" class="mode-btn" data-modo="voo-hotel" onclick="setModo(event,'rot','voo-hotel')">Passagem + Hotel</button>
+      <button type="button" class="mode-btn" data-modo="hotel" onclick="setModo(event,'rot','hotel')">Só hotel</button>
+    </div>
+
+    <h3>Identificação</h3>
+    <div class="form-grid two">
+      <div><label>Nome amigável</label><input id="rot-nome" placeholder="Aniversário Orlando"></div>
+      <div><label>Email notificação</label><input id="rot-email" placeholder="pessoa@email.com"></div>
+    </div>
+
+    <div id="rot-voo-block">
+      <h3>Voo</h3>
+      <div class="form-grid">
+        <div><label>Origem</label><input id="rot-origem" list="aeroportos" placeholder="Digite cidade ou IATA"></div>
+        <div><label>Destino</label><input id="rot-destino" list="aeroportos" placeholder="Digite cidade ou IATA"></div>
+        <div><label>Data ida</label><input id="rot-ida" type="date"></div>
+        <div><label>Data volta</label><input id="rot-volta" type="date"></div>
+        <div><label>Adultos</label><input id="rot-adultos" type="number" value="2" min="1"></div>
+        <div><label>Crianças</label><input id="rot-criancas" placeholder="9,6"></div>
+        <div><label>Bebês</label><input id="rot-bebes" type="number" value="0" min="0"></div>
+        <div><label>Classe</label><select id="rot-classe"><option value="economica">Econômica</option><option value="premium">Premium</option><option value="executiva">Executiva</option></select></div>
+        <div><label>Ida início</label><input id="rot-ida-ini" type="time" value="05:00"></div>
+        <div><label>Ida fim</label><input id="rot-ida-fim" type="time" value="23:59"></div>
+        <div><label>Volta início</label><input id="rot-volta-ini" type="time" value="00:00"></div>
+        <div><label>Volta fim</label><input id="rot-volta-fim" type="time" value="23:59"></div>
+        <div><label>Só diretos</label><select id="rot-direto"><option value="nao">Não</option><option value="sim">Sim</option></select></div>
+        <div><label>Máx escalas</label><select id="rot-max-escalas"><option value="0">Direto</option><option value="1" selected>1</option><option value="2">2</option><option value="9">Qualquer</option></select></div>
+        <div><label>Bagagem</label><select id="rot-bagagem"><option value="sim" selected>Sim</option><option value="nao">Não</option></select></div>
+      </div>
+    </div>
+
+    <div id="rot-hotel-block" class="hidden">
+      <h3>Hotel</h3>
+      <div class="form-grid">
+        <div><label>Cidade</label><input id="rot-hotel-cidade" list="cidades-hotel" placeholder="Digite a cidade/destino"></div>
+        <div><label>Bairro/Zona</label><input id="rot-hotel-bairro"></div>
+        <div><label>Check-in</label><input id="rot-checkin" type="date"></div>
+        <div><label>Check-out</label><input id="rot-checkout" type="date"></div>
+        <div><label>Noites</label><input id="rot-noites" type="number" value="7"></div>
+        <div><label>Quartos</label><input id="rot-quartos" type="number" value="1"></div>
+        <div><label>Estrelas mín.</label><select id="rot-estrelas"><option value="3">3★+</option><option value="4" selected>4★+</option><option value="5">5★</option></select></div>
+        <div><label>Nota mín.</label><select id="rot-nota"><option value="0">Qualquer</option><option value="7">7+</option><option value="8" selected>8+</option><option value="9">9+</option></select></div>
+        <div><label>Tipo</label><select id="rot-tipo" multiple size="5"><option value="hotel" selected>Hotel</option><option value="resort" selected>Resort</option><option value="all-inclusive">All-Inclusive</option><option value="apartamento">Apartamento</option><option value="villa">Villa</option></select></div>
+        <div><label>Regime</label><select id="rot-regime"><option value="qualquer">Qualquer</option><option value="cafe" selected>Café</option><option value="meia">Meia pensão</option><option value="completa">Pensão completa</option><option value="all-inclusive">All-Inclusive</option></select></div>
+        <div><label>Distância praia</label><select id="rot-praia"><option value="qualquer">Qualquer</option><option value="na-praia">Na praia</option><option value="500m">500m</option><option value="1km">1km</option></select></div>
+        <div><label>Preço máx/noite</label><input id="rot-preco-max" type="number" placeholder="2000"></div>
+        <div><label>Cancel. grátis</label><select id="rot-cancel"><option value="nao">Não</option><option value="sim" selected>Sim</option></select></div>
+        <div><label>Quarto família</label><select id="rot-familia"><option value="nao">Não</option><option value="sim" selected>Sim</option></select></div>
+      </div>
+      <details>
+        <summary>Comodidades</summary>
+        <div class="checkbox-grid" id="rot-comodidades">
+          <label><input type="checkbox" value="piscina" checked> Piscina</label>
+          <label><input type="checkbox" value="praia-privativa"> Praia privativa</label>
+          <label><input type="checkbox" value="cafe" checked> Café</label>
+          <label><input type="checkbox" value="wifi" checked> Wi-Fi</label>
+          <label><input type="checkbox" value="estacionamento"> Estacionamento</label>
+          <label><input type="checkbox" value="academia"> Academia</label>
+          <label><input type="checkbox" value="spa"> Spa</label>
+          <label><input type="checkbox" value="kids-club"> Kids club</label>
+          <label><input type="checkbox" value="parque-aquatico"> Parque aquático</label>
+          <label><input type="checkbox" value="ar-condicionado" checked> Ar-condicionado</label>
+          <label><input type="checkbox" value="transfer"> Transfer</label>
+          <label><input type="checkbox" value="restaurante"> Restaurante</label>
+          <label><input type="checkbox" value="bar"> Bar</label>
+          <label><input type="checkbox" value="pet-friendly"> Pet friendly</label>
+          <label><input type="checkbox" value="equipe-pt"> Equipe fala português</label>
+        </div>
+      </details>
+    </div>
+
+    <button class="primary" onclick="gerarComando('rot')">Gerar comando</button>
+    <div id="rot-cmd" class="command-box" style="display:none"></div>
+  </div>
+</div>
+
+</div>
+
+<script>
+const rotasData = JSON.parse(document.getElementById('dados-rotas').textContent);
+const histData = JSON.parse(document.getElementById('dados-historico').textContent);
+const modoSelecionado = { spot: 'voo', rot: 'voo' };
+
+document.getElementById('hoje').textContent = new Date().toLocaleDateString('pt-BR', {weekday:'long', day:'2-digit', month:'long', year:'numeric'});
+
+function showTab(ev, tab) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('sec-' + tab).classList.add('active');
+  ev.target.classList.add('active');
+}
+
+function setModo(ev, prefix, modo) {
+  modoSelecionado[prefix] = modo;
+  ev.target.closest('.mode-selector').querySelectorAll('.mode-btn').forEach(b => b.classList.toggle('active', b.dataset.modo === modo));
+  document.getElementById(`${prefix}-voo-block`).classList.toggle('hidden', modo === 'hotel');
+  document.getElementById(`${prefix}-hotel-block`).classList.toggle('hidden', modo === 'voo');
+}
+
+function fmtBRL(v) { return v ? 'R$ ' + v.toLocaleString('pt-BR', {minimumFractionDigits:0, maximumFractionDigits:0}) : '—'; }
+function fmtDur(min) { if (!min) return '—'; const h = Math.floor(min/60); const m = min%60; return h+'h '+(m<10?'0':'')+m+'m'; }
+function stars(n) { return '<span class="stars">'+'★'.repeat(n)+'</span>'; }
+
+function getChecked(id) { return Array.from(document.querySelectorAll(`#${id} input[type=checkbox]:checked`)).map(c => c.value); }
+function getMulti(id) { return Array.from(document.getElementById(id).selectedOptions).map(o => o.value); }
+
+function gerarComando(prefix) {
+  const modo = modoSelecionado[prefix];
+  const g = id => document.getElementById(`${prefix}-${id}`)?.value || '';
+  const L = [];
+  if (prefix === 'spot') L.push(`BUSCA SPOT — ${labelModo(modo)}`);
+  else { L.push(`NOVA ROTINA "${g('nome')||'(sem nome)'}" — ${labelModo(modo)}`); if (g('email')) L.push(`Email: ${g('email')}`); }
+
+  if (modo !== 'hotel') {
+    L.push('── VOO ──');
+    L.push(`Origem: ${g('origem')} → Destino: ${g('destino')}`);
+    L.push(`Ida: ${g('ida')} (${g('ida-ini')}–${g('ida-fim')})  |  Volta: ${g('volta')} (${g('volta-ini')}–${g('volta-fim')})`);
+    L.push(`${g('adultos')}A + crianças [${g('criancas')||'nenhuma'}] + ${g('bebes')||0}B  |  Classe: ${g('classe')}`);
+    L.push(`Só diretos: ${g('direto')}  |  Máx escalas: ${g('max-escalas')}  |  Bagagem: ${g('bagagem')}`);
+    if (g('cias-pref')) L.push(`Cias preferidas: ${g('cias-pref')}`);
+    if (g('cias-evitar')) L.push(`Cias evitar: ${g('cias-evitar')}`);
+  }
+
+  if (modo !== 'voo') {
+    L.push('── HOTEL ──');
+    L.push(`Cidade: ${g('hotel-cidade')}${g('hotel-bairro')?' · '+g('hotel-bairro'):''}`);
+    L.push(`Check-in: ${g('checkin')} → Check-out: ${g('checkout')}${prefix==='rot'?' ('+g('noites')+' noites)':''}  |  Quartos: ${g('quartos')}`);
+    L.push(`Estrelas ${g('estrelas')}★+  |  Nota hóspedes ${g('nota')}+`);
+    const tipos = getMulti(`${prefix}-tipo`); if (tipos.length) L.push(`Tipos: ${tipos.join(', ')}`);
+    L.push(`Regime: ${g('regime')}  |  Praia: ${g('praia')}`);
+    if (g('preco-max')) L.push(`Preço máx/noite: R$ ${g('preco-max')}`);
+    L.push(`Cancelamento grátis: ${g('cancel')}${prefix==='spot'?'  |  Sem pré-pagamento: '+g('prepago'):''}  |  Quarto família: ${g('familia')}`);
+    const com = getChecked(`${prefix}-comodidades`); if (com.length) L.push(`Comodidades: ${com.join(', ')}`);
+  }
+
+  L.push('Retornar em R$ com top 5 voos (Kiwi+Lastminute), top 3 pacotes e top 10 hotéis. Incluir escalas, duração, nota, link.');
+  const cmd = L.join('\n');
+  const box = document.getElementById(`${prefix}-cmd`);
+  box.style.display = 'block'; box.textContent = cmd;
+  navigator.clipboard?.writeText(cmd);
+}
+
+function labelModo(m) { return m === 'voo' ? 'SÓ PASSAGEM' : (m === 'hotel' ? 'SÓ HOTEL' : 'PASSAGEM + HOTEL'); }
+
+function renderRotas() {
+  const container = document.getElementById('sec-rotas');
+  const ativas = rotasData.rotas.filter(r => r.ativa);
+  if (ativas.length === 0) { container.innerHTML = '<div class="empty">Nenhuma rotina ativa. Crie uma em <strong>Nova rotina</strong>.</div>'; return; }
+  container.innerHTML = ativas.map(r => {
+    const regs = histData.registros.filter(h => h.rota_id === r.id).sort((a,b) => a.data.localeCompare(b.data));
+    const ultimo = regs[regs.length-1] || {};
+    const minHist = histData.minimos_historicos[r.id] || {};
+    const modoLbl = r.modo === 'voo' ? 'Só voo' : (r.modo === 'hotel' ? 'Só hotel' : 'Voo + Hotel');
+    const precoRef = r.modo === 'hotel' ? ultimo.preco_min_hotel_noite : ultimo.preco_min_voo;
+    const minRef = r.modo === 'hotel' ? minHist.preco_min_hotel_noite : minHist.preco_min_voo;
+    const dataMin = r.modo === 'hotel' ? minHist.data_preco_min_hotel_noite : minHist.data_preco_min_voo;
+    const eh = precoRef && precoRef === minRef && ultimo.data === dataMin;
+    const badge = eh ? '<span class="badge badge-champion">Mínimo histórico</span>' : (minRef ? `<span class="badge badge-muted">Mín: ${fmtBRL(minRef)} · ${dataMin}</span>` : '');
+    const titulo = r.modo === 'hotel' ? `${r.hotel_cidade||r.destino}` : `${r.origem} → ${r.destino}`;
+    const dataLbl = r.modo === 'hotel' ? `${r.checkin||r.data_ida} → ${r.checkout||r.data_volta}` : `${r.data_ida} → ${r.data_volta}`;
+    return `
+      <div class="card ${eh?'champion':''}">
+        <div class="card-header">
+          <div>
+            <h2 class="route-title">${titulo}</h2>
+            <div class="route-sub">
+              <span class="badge badge-brand">${modoLbl}</span>
+              ${badge}
+              <span style="margin-left:8px">${dataLbl} · ${r.adultos}A${r.criancas_idades?.length?'+'+r.criancas_idades.length+'C':''}</span>
+            </div>
+          </div>
+          <button class="ghost" onclick="removerRota('${r.id}')">Remover</button>
+        </div>
+        <div class="meta-row">
+          <div class="meta"><div class="meta-label">${r.modo==='hotel'?'Menor/noite':'Menor preço'}</div><div class="price-big">${fmtBRL(precoRef)}</div></div>
+          <div class="meta"><div class="meta-label">Mínimo histórico</div><div class="meta-value">${fmtBRL(minRef)}</div></div>
+          ${r.modo!=='hotel'?`<div class="meta"><div class="meta-label">Ida</div><div class="meta-value">${r.ida_hora_inicio||'—'}–${r.ida_hora_fim||'—'}</div></div><div class="meta"><div class="meta-label">Volta</div><div class="meta-value">${r.volta_hora_inicio||'—'}–${r.volta_hora_fim||'—'}</div></div>`:''}
+          ${r.modo!=='voo'?`<div class="meta"><div class="meta-label">Hotel</div><div class="meta-value">${stars(r.hotel_estrelas_min||3)} · ${r.hotel_regime||'—'}</div></div>`:''}
+        </div>
+        <div class="chart-container"><canvas id="chart-${r.id}"></canvas></div>
+        <h3>Últimos registros</h3>
+        <table>
+          <thead><tr><th>Data</th><th>Mín voo</th><th>Médio top5</th><th>Mín pacote</th><th>Mín hotel/noite</th><th>Cia</th><th>Escalas</th><th>Duração</th><th>Link</th></tr></thead>
+          <tbody>${regs.slice(-10).reverse().map(h => {
+            const isMin = (h.preco_min_voo === minHist.preco_min_voo && h.data === minHist.data_preco_min_voo);
+            return `<tr class="${isMin?'highlight-green':''}"><td>${h.data}</td><td>${fmtBRL(h.preco_min_voo)}</td><td>${fmtBRL(h.preco_medio_voo_top5)}</td><td>${fmtBRL(h.preco_min_pacote)}</td><td>${fmtBRL(h.preco_min_hotel_noite)}</td><td>${h.companhia||'—'}</td><td>${(h.escalas_ida||'—')+' / '+(h.escalas_volta||'—')}</td><td>${fmtDur(h.duracao_ida_min)} / ${fmtDur(h.duracao_volta_min)}</td><td>${h.link?'<a href="'+h.link+'" target="_blank">abrir</a>':'—'}</td></tr>`;
+          }).join('')}</tbody>
+        </table>
+      </div>`;
+  }).join('');
+
+  ativas.forEach(r => {
+    const regs = histData.registros.filter(h => h.rota_id === r.id).sort((a,b) => a.data.localeCompare(b.data));
+    const ctx = document.getElementById('chart-'+r.id); if (!ctx) return;
+    new Chart(ctx, {
+      type: 'line',
+      data: { labels: regs.map(h => h.data), datasets: [
+        { label: 'Mín voo', data: regs.map(h => h.preco_min_voo), borderColor: '#1f6b3f', backgroundColor: 'rgba(31,107,63,0.08)', tension: 0.3, fill: true, borderWidth: 2, pointRadius: 3 },
+        { label: 'Médio top5', data: regs.map(h => h.preco_medio_voo_top5), borderColor: '#6b7a72', tension: 0.3, fill: false, borderWidth: 2, borderDash: [4,4], pointRadius: 2 },
+        { label: 'Mín pacote', data: regs.map(h => h.preco_min_pacote), borderColor: '#e9a23b', tension: 0.3, fill: false, borderWidth: 2, pointRadius: 2 },
+        { label: 'Mín hotel/noite', data: regs.map(h => h.preco_min_hotel_noite), borderColor: '#c54b3f', tension: 0.3, fill: false, borderWidth: 2, pointRadius: 2 }
+      ]},
+      options: { responsive: true, maintainAspectRatio: false,
+        plugins: { legend: { labels: { color: '#14261c', font: { family: 'Inter', size: 12 } }, position: 'bottom' } },
+        scales: { x: { ticks: { color: '#6b7a72' }, grid: { color: '#e4e1d8' } }, y: { ticks: { color: '#6b7a72', callback: v => 'R$ '+v.toLocaleString('pt-BR') }, grid: { color: '#e4e1d8' } } }
+      }
+    });
+  });
+}
+
+function removerRota(id) {
+  const r = rotasData.rotas.find(x => x.id === id);
+  const cmd = `Remover rotina "${r.origem||r.hotel_cidade} → ${r.destino||''}" (id: ${id}).`;
+  navigator.clipboard?.writeText(cmd);
+  alert('Comando copiado. Cole no chat do Claude:\n\n' + cmd);
+}
+
+renderRotas();
+</script>
+</body>
+</html>
