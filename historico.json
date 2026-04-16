@@ -34,8 +34,8 @@
     {
       "rota_id": "sp-rj-abr2026",
       "data": "2026-04-16",
-      "preco_min_voo": 8704,
-      "preco_medio_voo_top5": 8704,
+      "preco_min_voo": 17402,
+      "preco_medio_voo_top5": 17463,
       "preco_min_pacote": null,
       "preco_min_hotel_noite": null,
       "fonte_min": "Kiwi",
@@ -44,7 +44,7 @@
       "escalas_volta": "direto",
       "duracao_ida_min": 60,
       "duracao_volta_min": 65,
-      "link": "https://on.kiwi.com/Ul1zM2",
+      "link": "https://on.kiwi.com/NN4Lke",
       "cambio_eur_brl": 5.95
     }
   ],
@@ -56,7 +56,7 @@
       "data_preco_min_pacote": "2026-04-16"
     },
     "sp-rj-abr2026": {
-      "preco_min_voo": 8704,
+      "preco_min_voo": 17402,
       "data_preco_min_voo": "2026-04-16",
       "preco_min_pacote": null,
       "data_preco_min_pacote": null
