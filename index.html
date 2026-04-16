@@ -32,7 +32,7 @@
   .logo-svg, .logo-img { flex-shrink: 0; object-fit: contain; max-height: 56px; max-width: 180px; }
   .wordmark-fallback { display: inline-flex; align-items: baseline; gap: 0; font-family: 'Fraunces', serif; font-weight: 800; font-size: 28px; letter-spacing: -0.01em; line-height: 1; }
   .wm-t { color: var(--brand-deep); }
-  .wm-v { color: var(--brand); margin-left: 2px; font-style: italic; font-weight: 600; }
+  .wm-v { color: var(--brand); margin-left: 6px; font-weight: 800; }
   .logo-img + .brand-name, .logo-img + div + .wordmark-fallback { display: none; }
   .brand { align-items: center; }
   .header-right { font-size: 13px; color: var(--muted); }
@@ -173,13 +173,20 @@
 </datalist>
 
 <script id="dados-rotas" type="application/json">
-{"rotas":[{"id":"sp-cun-jul2026","ativa":true,"modo":"voo-hotel","criada_em":"2026-04-15","origem":"São Paulo","origem_codigo":"SAO","destino":"Cancún","destino_codigo":"CUN","data_ida":"2026-07-25","data_volta":"2026-08-01","ida_hora_inicio":"05:00","ida_hora_fim":"12:00","volta_hora_inicio":"12:00","volta_hora_fim":"18:00","adultos":2,"criancas_idades":[9,6],"quartos":1,"hotel_estrelas_min":4,"hotel_regime":"all-inclusive","noites":7}]}
+{"rotas":[{"id":"sp-cun-jul2026","ativa":true,"modo":"voo-hotel","dono":"Cesar","dono_email":"cesaogolgpt@gmail.com","criada_em":"2026-04-15","origem":"São Paulo","origem_codigo":"SAO","destino":"Cancún","destino_codigo":"CUN","data_ida":"2026-07-25","data_volta":"2026-08-01","ida_hora_inicio":"05:00","ida_hora_fim":"12:00","volta_hora_inicio":"12:00","volta_hora_fim":"18:00","adultos":2,"criancas_idades":[9,6],"quartos":1,"hotel_estrelas_min":4,"hotel_regime":"all-inclusive","noites":7}]}
 </script>
 <script id="dados-historico" type="application/json">
 {"registros":[{"rota_id":"sp-cun-jul2026","data":"2026-04-15","preco_min_voo":14815,"preco_medio_voo_top5":15820,"preco_min_pacote":null,"preco_min_hotel_noite":null,"fonte_min":"Kiwi","companhia":"Avianca","escalas_ida":"1 em BOG","escalas_volta":"1 em BOG","duracao_ida_min":780,"duracao_volta_min":810,"link":"https://on.kiwi.com/Mjeag9"}],"minimos_historicos":{"sp-cun-jul2026":{"preco_min_voo":14815,"data_preco_min_voo":"2026-04-15"}}}
 </script>
 
-<div id="sec-rotas" class="section active"></div>
+<div id="sec-rotas" class="section active">
+  <div class="mode-selector" style="max-width:420px">
+    <button type="button" class="mode-btn active" data-dono="todos" onclick="setDono(event,'todos')">Todas</button>
+    <button type="button" class="mode-btn" data-dono="Cesar" onclick="setDono(event,'Cesar')">Cesar</button>
+    <button type="button" class="mode-btn" data-dono="Pati" onclick="setDono(event,'Pati')">Pati</button>
+  </div>
+  <div id="rotas-lista"></div>
+</div>
 
 <div id="sec-spot" class="section">
   <div class="card">
@@ -225,7 +232,18 @@
         <div><label>Quartos</label><input id="spot-quartos" type="number" value="1" min="1" max="5"></div>
         <div><label>Estrelas mínimas</label><select id="spot-estrelas"><option value="2">2★+</option><option value="3">3★+</option><option value="4" selected>4★+</option><option value="5">Só 5★</option></select></div>
         <div><label>Nota hóspedes</label><select id="spot-nota"><option value="0">Qualquer</option><option value="7">7+</option><option value="8" selected>8+</option><option value="9">9+</option></select></div>
-        <div><label>Tipo</label><select id="spot-tipo" multiple size="5"><option value="hotel" selected>Hotel</option><option value="resort" selected>Resort</option><option value="all-inclusive">All-Inclusive</option><option value="apartamento">Apartamento</option><option value="villa">Villa</option><option value="boutique">Boutique</option><option value="pousada">Pousada</option></select><div class="hint">Ctrl/Cmd + clique p/ múltiplos</div></div>
+        <div style="grid-column:1/-1"><label>Tipo de acomodação</label>
+          <div class="checkbox-grid" id="spot-tipo-grid">
+            <label><input type="checkbox" value="hotel" checked> Hotel</label>
+            <label><input type="checkbox" value="resort" checked> Resort</label>
+            <label><input type="checkbox" value="all-inclusive" checked> All-Inclusive</label>
+            <label><input type="checkbox" value="apartamento"> Apartamento</label>
+            <label><input type="checkbox" value="villa"> Villa</label>
+            <label><input type="checkbox" value="boutique"> Boutique</label>
+            <label><input type="checkbox" value="pousada"> Pousada</label>
+            <label><input type="checkbox" value="flat"> Flat / Aparthotel</label>
+          </div>
+        </div>
         <div><label>Regime</label><select id="spot-regime"><option value="qualquer">Qualquer</option><option value="sem">Sem refeições</option><option value="cafe">Café</option><option value="meia">Meia pensão</option><option value="completa">Pensão completa</option><option value="all-inclusive" selected>All-Inclusive</option></select></div>
         <div><label>Distância praia</label><select id="spot-praia"><option value="qualquer">Qualquer</option><option value="na-praia">Na praia</option><option value="500m" selected>500m</option><option value="1km">1km</option><option value="3km">3km</option></select></div>
         <div><label>Preço máx/noite (R$)</label><input id="spot-preco-max" type="number" placeholder="2000"></div>
@@ -278,9 +296,16 @@
     </div>
 
     <h3>Identificação</h3>
-    <div class="form-grid two">
+    <div class="form-grid">
+      <div><label>Dono da rotina</label>
+        <select id="rot-dono" onchange="autoEmail()">
+          <option value="Cesar">Cesar</option>
+          <option value="Pati">Pati</option>
+          <option value="outro">Outro…</option>
+        </select>
+      </div>
       <div><label>Nome amigável</label><input id="rot-nome" placeholder="Aniversário Orlando"></div>
-      <div><label>Email notificação</label><input id="rot-email" placeholder="pessoa@email.com"></div>
+      <div><label>Email notificação</label><input id="rot-email" value="cesaogolgpt@gmail.com" placeholder="pessoa@email.com"></div>
     </div>
 
     <div id="rot-voo-block">
@@ -315,7 +340,18 @@
         <div><label>Quartos</label><input id="rot-quartos" type="number" value="1"></div>
         <div><label>Estrelas mín.</label><select id="rot-estrelas"><option value="3">3★+</option><option value="4" selected>4★+</option><option value="5">5★</option></select></div>
         <div><label>Nota mín.</label><select id="rot-nota"><option value="0">Qualquer</option><option value="7">7+</option><option value="8" selected>8+</option><option value="9">9+</option></select></div>
-        <div><label>Tipo</label><select id="rot-tipo" multiple size="5"><option value="hotel" selected>Hotel</option><option value="resort" selected>Resort</option><option value="all-inclusive">All-Inclusive</option><option value="apartamento">Apartamento</option><option value="villa">Villa</option></select></div>
+        <div style="grid-column:1/-1"><label>Tipo de acomodação</label>
+          <div class="checkbox-grid" id="rot-tipo-grid">
+            <label><input type="checkbox" value="hotel" checked> Hotel</label>
+            <label><input type="checkbox" value="resort" checked> Resort</label>
+            <label><input type="checkbox" value="all-inclusive" checked> All-Inclusive</label>
+            <label><input type="checkbox" value="apartamento"> Apartamento</label>
+            <label><input type="checkbox" value="villa"> Villa</label>
+            <label><input type="checkbox" value="boutique"> Boutique</label>
+            <label><input type="checkbox" value="pousada"> Pousada</label>
+            <label><input type="checkbox" value="flat"> Flat / Aparthotel</label>
+          </div>
+        </div>
         <div><label>Regime</label><select id="rot-regime"><option value="qualquer">Qualquer</option><option value="cafe" selected>Café</option><option value="meia">Meia pensão</option><option value="completa">Pensão completa</option><option value="all-inclusive">All-Inclusive</option></select></div>
         <div><label>Distância praia</label><select id="rot-praia"><option value="qualquer">Qualquer</option><option value="na-praia">Na praia</option><option value="500m">500m</option><option value="1km">1km</option></select></div>
         <div><label>Preço máx/noite</label><input id="rot-preco-max" type="number" placeholder="2000"></div>
@@ -355,6 +391,21 @@
 const rotasData = JSON.parse(document.getElementById('dados-rotas').textContent);
 const histData = JSON.parse(document.getElementById('dados-historico').textContent);
 const modoSelecionado = { spot: 'voo', rot: 'voo' };
+let donoFiltro = 'todos';
+const emailsDono = { Cesar: 'cesaogolgpt@gmail.com', Pati: 'patiazevedo@gmail.com' };
+
+function autoEmail() {
+  const d = document.getElementById('rot-dono').value;
+  const em = document.getElementById('rot-email');
+  if (d !== 'outro' && emailsDono[d]) em.value = emailsDono[d];
+  else if (d === 'outro') em.value = '';
+}
+
+function setDono(ev, d) {
+  donoFiltro = d;
+  ev.currentTarget.closest('.mode-selector').querySelectorAll('.mode-btn').forEach(b => b.classList.toggle('active', b.dataset.dono === d));
+  renderRotas();
+}
 
 document.getElementById('hoje').textContent = new Date().toLocaleDateString('pt-BR', {weekday:'long', day:'2-digit', month:'long', year:'numeric'});
 
@@ -384,7 +435,7 @@ function gerarComando(prefix) {
   const g = id => document.getElementById(`${prefix}-${id}`)?.value || '';
   const L = [];
   if (prefix === 'spot') L.push(`BUSCA SPOT — ${labelModo(modo)}`);
-  else { L.push(`NOVA ROTINA "${g('nome')||'(sem nome)'}" — ${labelModo(modo)}`); if (g('email')) L.push(`Email: ${g('email')}`); }
+  else { L.push(`NOVA ROTINA "${g('nome')||'(sem nome)'}" — ${labelModo(modo)}`); L.push(`Dono: ${g('dono')||'—'} · Email: ${g('email')||'—'}`); }
 
   if (modo !== 'hotel') {
     L.push('── VOO ──');
@@ -401,7 +452,7 @@ function gerarComando(prefix) {
     L.push(`Cidade: ${g('hotel-cidade')}${g('hotel-bairro')?' · '+g('hotel-bairro'):''}`);
     L.push(`Check-in: ${g('checkin')} → Check-out: ${g('checkout')}${prefix==='rot'?' ('+g('noites')+' noites)':''}  |  Quartos: ${g('quartos')}`);
     L.push(`Estrelas ${g('estrelas')}★+  |  Nota hóspedes ${g('nota')}+`);
-    const tipos = getMulti(`${prefix}-tipo`); if (tipos.length) L.push(`Tipos: ${tipos.join(', ')}`);
+    const tipos = getChecked(`${prefix}-tipo-grid`); if (tipos.length) L.push(`Tipos: ${tipos.join(', ')}`);
     L.push(`Regime: ${g('regime')}  |  Praia: ${g('praia')}`);
     if (g('preco-max')) L.push(`Preço máx/noite: R$ ${g('preco-max')}`);
     L.push(`Cancelamento grátis: ${g('cancel')}${prefix==='spot'?'  |  Sem pré-pagamento: '+g('prepago'):''}  |  Quarto família: ${g('familia')}`);
@@ -418,9 +469,10 @@ function gerarComando(prefix) {
 function labelModo(m) { return m === 'voo' ? 'SÓ PASSAGEM' : (m === 'hotel' ? 'SÓ HOTEL' : 'PASSAGEM + HOTEL'); }
 
 function renderRotas() {
-  const container = document.getElementById('sec-rotas');
-  const ativas = rotasData.rotas.filter(r => r.ativa);
-  if (ativas.length === 0) { container.innerHTML = '<div class="empty">Nenhuma rotina ativa. Crie uma em <strong>Nova rotina</strong>.</div>'; return; }
+  const container = document.getElementById('rotas-lista');
+  let ativas = rotasData.rotas.filter(r => r.ativa);
+  if (donoFiltro !== 'todos') ativas = ativas.filter(r => (r.dono || '').toLowerCase() === donoFiltro.toLowerCase());
+  if (ativas.length === 0) { container.innerHTML = '<div class="empty">Nenhuma rotina ativa para ' + (donoFiltro==='todos'?'ninguém':donoFiltro) + '. Crie uma em <strong>Nova rotina</strong>.</div>'; return; }
   container.innerHTML = ativas.map(r => {
     const regs = histData.registros.filter(h => h.rota_id === r.id).sort((a,b) => a.data.localeCompare(b.data));
     const ultimo = regs[regs.length-1] || {};
@@ -440,6 +492,7 @@ function renderRotas() {
             <h2 class="route-title">${titulo}</h2>
             <div class="route-sub">
               <span class="badge badge-brand">${modoLbl}</span>
+              ${r.dono ? `<span class="badge badge-muted">👤 ${r.dono}</span>` : ''}
               ${badge}
               <span style="margin-left:8px">${dataLbl} · ${r.adultos}A${r.criancas_idades?.length?'+'+r.criancas_idades.length+'C':''}</span>
             </div>
