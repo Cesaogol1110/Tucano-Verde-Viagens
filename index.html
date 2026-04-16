@@ -125,6 +125,8 @@
   <button class="tab active" onclick="showTab(event,'rotas')">Rotinas monitoradas</button>
   <button class="tab" onclick="showTab(event,'spot')">Busca spot</button>
   <button class="tab" onclick="showTab(event,'nova')">Nova rotina</button>
+  <button class="tab" onclick="showTab(event,'planejador')" style="color:var(--accent);font-weight:600">🌎 Onde posso ir?</button>
+  <button class="tab" onclick="showTab(event,'milhas')">✈️ Milhas</button>
 </div>
 
 <datalist id="aeroportos">
@@ -238,7 +240,7 @@
 {"rotas":[{"id":"sp-cun-jul2026","ativa":true,"modo":"voo-hotel","dono":"Cesar","dono_email":"cesaogolgpt@gmail.com","criada_em":"2026-04-15","origem":"São Paulo","origem_codigo":"SAO","destino":"Cancún","destino_codigo":"CUN","data_ida":"2026-07-25","data_volta":"2026-08-01","ida_hora_inicio":"05:00","ida_hora_fim":"12:00","volta_hora_inicio":"12:00","volta_hora_fim":"18:00","adultos":2,"criancas_idades":[9,6],"quartos":1,"hotel_estrelas_min":4,"hotel_regime":"all-inclusive","noites":7},{"id":"sp-rj-abr2026","ativa":true,"modo":"voo","dono":"Cesar","dono_email":"cesaogolgpt@gmail.com","criada_em":"2026-04-16","origem":"São Paulo (CGH)","origem_codigo":"CGH","destino":"Rio de Janeiro (SDU)","destino_codigo":"SDU","data_ida":"2026-04-18","data_volta":"2026-04-21","ida_hora_inicio":"05:00","ida_hora_fim":"11:00","volta_hora_inicio":"11:00","volta_hora_fim":"15:00","adultos":2,"criancas_idades":[],"noites":3}]}
 </script>
 <script id="dados-historico" type="application/json">
-{"registros":[{"rota_id":"sp-cun-jul2026","data":"2026-04-15","preco_min_voo":14815,"preco_medio_voo_top5":15820,"preco_min_pacote":null,"fonte_min":"Kiwi","companhia":"Avianca","escalas_ida":"1 em BOG","escalas_volta":"1 em BOG","duracao_ida_min":780,"duracao_volta_min":810,"link":"https://on.kiwi.com/Mjeag9","cambio_eur_brl":5.89},{"rota_id":"sp-cun-jul2026","data":"2026-04-16","preco_min_voo":13089,"preco_medio_voo_top5":13676,"preco_min_pacote":17522,"preco_min_hotel_noite":2503,"fonte_min":"Lastminute","companhia":"Avianca","escalas_ida":"1 em BOG","escalas_volta":"1 em BOG","duracao_ida_min":675,"duracao_volta_min":1570,"link":"https://www.lastminute.ie/msr/route/searching.do?departureAirport=SAO&arrivalAirport=CUN&outboundDay=25&outboundMonthYear=072026&returnDay=01&returnMonthYear=082026&adults=2&childs=2&infants=0","cambio_eur_brl":5.95},{"rota_id":"sp-rj-abr2026","data":"2026-04-16","preco_min_voo":17402,"preco_medio_voo_top5":17463,"preco_min_pacote":null,"preco_min_hotel_noite":null,"fonte_min":"Kiwi","companhia":"LATAM","escalas_ida":"direto","escalas_volta":"direto","duracao_ida_min":60,"duracao_volta_min":65,"link":"https://on.kiwi.com/NN4Lke","cambio_eur_brl":5.95}],"minimos_historicos":{"sp-cun-jul2026":{"preco_min_voo":13089,"data_preco_min_voo":"2026-04-16","preco_min_pacote":17104,"data_preco_min_pacote":"2026-04-16"},"sp-rj-abr2026":{"preco_min_voo":17402,"data_preco_min_voo":"2026-04-16","preco_min_pacote":null,"data_preco_min_pacote":null}}}
+{"registros":[{"rota_id":"sp-cun-jul2026","data":"2026-04-15","preco_min_voo":14815,"preco_medio_voo_top5":15820,"preco_min_pacote":null,"preco_min_hotel_noite":null,"fonte_min":"Kiwi","companhia":"Avianca","escalas_ida":"1 em BOG","escalas_volta":"1 em BOG","duracao_ida_min":780,"duracao_volta_min":810,"link":"https://on.kiwi.com/Mjeag9","cambio_eur_brl":5.89},{"rota_id":"sp-cun-jul2026","data":"2026-04-16","preco_min_voo":13089,"preco_medio_voo_top5":13676,"preco_min_pacote":17104,"preco_min_hotel_noite":2443,"fonte_min":"Lastminute","companhia":"Avianca","escalas_ida":"1 em BOG","escalas_volta":"1 em BOG","duracao_ida_min":675,"duracao_volta_min":635,"link":"https://www.lastminute.ie/msr/route/searching.do?departureAirport=GRU&arrivalAirport=CUN&outboundDay=25&outboundMonthYear=072026&returnDay=01&returnMonthYear=082026&adults=2&childs=2&infants=0","cambio_eur_brl":5.95},{"rota_id":"sp-rj-abr2026","data":"2026-04-16","preco_min_voo":17395,"preco_medio_voo_top5":17509,"preco_min_pacote":null,"preco_min_hotel_noite":null,"fonte_min":"Kiwi","companhia":"GOL","escalas_ida":"direto","escalas_volta":"direto","duracao_ida_min":60,"duracao_volta_min":65,"link":"https://on.kiwi.com/ltiTZG","cambio_eur_brl":5.95}],"minimos_historicos":{"sp-cun-jul2026":{"preco_min_voo":13089,"data_preco_min_voo":"2026-04-16","preco_min_pacote":17104,"data_preco_min_pacote":"2026-04-16"},"sp-rj-abr2026":{"preco_min_voo":17395,"data_preco_min_voo":"2026-04-16","preco_min_pacote":null,"data_preco_min_pacote":null}}}
 </script>
 
 <div id="sec-rotas" class="section active">
@@ -458,6 +460,201 @@
   </div>
 </div>
 
+<!-- ═══════════════ ABA: MILHAS ═══════════════ -->
+<div id="sec-milhas" class="section">
+  <div class="card">
+    <h2 style="font-family:'Fraunces',serif;font-size:26px;margin-bottom:4px">✈️ Comparador de Milhas</h2>
+    <p class="lead" style="margin-bottom:24px">Compare se vale mais comprar com dinheiro ou usar milhas dos programas LATAM Pass, Smiles (GOL) ou Azul Fidelidade.</p>
+
+    <h3>Seus saldos de milhas</h3>
+    <div class="form-grid">
+      <div>
+        <label>LATAM Pass (pontos)</label>
+        <input id="milhas-latam" type="number" placeholder="0" value="0">
+        <span style="font-size:11px;color:var(--muted)">1 ponto ≈ R$ 0,02–0,04</span>
+      </div>
+      <div>
+        <label>Smiles / GOL (milhas)</label>
+        <input id="milhas-smiles" type="number" placeholder="0" value="0">
+        <span style="font-size:11px;color:var(--muted)">1 milha ≈ R$ 0,02–0,035</span>
+      </div>
+      <div>
+        <label>Azul Fidelidade (pontos)</label>
+        <input id="milhas-azul" type="number" placeholder="0" value="0">
+        <span style="font-size:11px;color:var(--muted)">1 ponto ≈ R$ 0,015–0,03</span>
+      </div>
+    </div>
+
+    <h3>Custo médio por milha/ponto (se comprou)</h3>
+    <div class="form-grid">
+      <div>
+        <label>LATAM (R$ por ponto)</label>
+        <input id="custo-latam" type="number" step="0.001" value="0.030" placeholder="0.030">
+      </div>
+      <div>
+        <label>Smiles (R$ por milha)</label>
+        <input id="custo-smiles" type="number" step="0.001" value="0.025" placeholder="0.025">
+      </div>
+      <div>
+        <label>Azul (R$ por ponto)</label>
+        <input id="custo-azul" type="number" step="0.001" value="0.020" placeholder="0.020">
+      </div>
+    </div>
+
+    <h3>Rota para comparar</h3>
+    <div class="form-grid">
+      <div><label>Origem</label><input id="milhas-origem" list="aeroportos" placeholder="São Paulo — GRU" value="São Paulo — GRU (Guarulhos)"></div>
+      <div><label>Destino</label><input id="milhas-destino" list="aeroportos" placeholder="Destino"></div>
+      <div><label>Data ida</label><input id="milhas-ida" type="date"></div>
+      <div><label>Data volta</label><input id="milhas-volta" type="date"></div>
+      <div><label>Adultos</label><input id="milhas-adultos" type="number" value="2" min="1"></div>
+      <div><label>Classe</label>
+        <select id="milhas-classe">
+          <option value="economica" selected>Econômica</option>
+          <option value="executiva">Executiva</option>
+        </select>
+      </div>
+    </div>
+
+    <div style="margin-top:20px">
+      <button class="btn" onclick="compararMilhas()">✈️ Comparar dinheiro vs milhas</button>
+    </div>
+
+    <div id="milhas-resultado" style="margin-top:24px"></div>
+  </div>
+
+  <div class="card" style="margin-top:20px">
+    <h3 style="margin-top:0">💡 Dicas sobre milhas</h3>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;margin-top:12px">
+      <div style="background:var(--brand-soft);padding:14px;border-radius:10px">
+        <div style="font-weight:600;margin-bottom:4px">Quando usar milhas?</div>
+        <div style="font-size:13px;color:var(--muted)">Quando o custo por milha da passagem é MAIOR que o que você pagou pelas milhas. Ex: passagem de 30.000 milhas que custa R$ 1.500 em dinheiro = R$ 0,05/milha. Se suas milhas custaram R$ 0,02, vale usar.</div>
+      </div>
+      <div style="background:var(--accent-soft);padding:14px;border-radius:10px">
+        <div style="font-weight:600;margin-bottom:4px">Quando NÃO usar?</div>
+        <div style="font-size:13px;color:var(--muted)">Quando tem promoção boa em dinheiro. Passagens baratas em cash muitas vezes rendem mais que gastar milhas. Guarde milhas para voos caros (executiva, alta temporada).</div>
+      </div>
+      <div style="background:var(--brand-soft);padding:14px;border-radius:10px">
+        <div style="font-weight:600;margin-bottom:4px">Acúmulo inteligente</div>
+        <div style="font-size:13px;color:var(--muted)">Use cartão de crédito que acumula milhas em todas as compras. Concentre gastos no cartão e transfira para o programa com melhor bônus. Aproveite promoções de transferência (até 100% de bônus).</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ ABA: ONDE POSSO IR? ═══════════════ -->
+<div id="sec-planejador" class="section">
+  <div class="card">
+    <h2 style="font-family:'Fraunces',serif;font-size:26px;margin-bottom:4px">🌎 Onde posso ir?</h2>
+    <p class="lead" style="margin-bottom:24px">Informe seu orçamento e preferências — o sistema compara dezenas de destinos e mostra os melhores dentro do seu valor.</p>
+
+    <h3>Orçamento e viajantes</h3>
+    <div class="form-grid">
+      <div><label>Orçamento total (R$) <span style="color:var(--danger)">*</span></label><input id="plan-orcamento" type="number" placeholder="10000" title="Valor total para toda a viagem (voo + hotel + tudo)"></div>
+      <div><label>Inclui o quê?</label>
+        <select id="plan-inclui">
+          <option value="tudo" selected>Voo + Hotel + Tudo</option>
+          <option value="voo-hotel">Só voo + hotel</option>
+          <option value="voo">Só passagem aérea</option>
+        </select>
+      </div>
+      <div><label>Adultos</label><input id="plan-adultos" type="number" value="2" min="1" max="9"></div>
+      <div><label>Crianças (idades)</label><input id="plan-criancas" placeholder="9,6"></div>
+    </div>
+
+    <h3>Datas</h3>
+    <div class="form-grid">
+      <div><label>Ida (a partir de)</label><input id="plan-ida-de" type="date"></div>
+      <div><label>Ida (até)</label><input id="plan-ida-ate" type="date"></div>
+      <div><label>Duração da viagem</label>
+        <select id="plan-duracao">
+          <option value="3-4">3–4 noites (fds prolongado)</option>
+          <option value="5-7" selected>5–7 noites</option>
+          <option value="8-10">8–10 noites</option>
+          <option value="11-15">11–15 noites</option>
+          <option value="flexivel">Flexível</option>
+        </select>
+      </div>
+      <div><label>Flexibilidade de datas</label>
+        <select id="plan-flex">
+          <option value="fixo">Datas fixas</option>
+          <option value="3" selected>± 3 dias</option>
+          <option value="7">± 7 dias</option>
+          <option value="mes">Mês inteiro</option>
+        </select>
+      </div>
+    </div>
+
+    <h3>Origem</h3>
+    <div class="form-grid">
+      <div><label>Saindo de</label><input id="plan-origem" list="aeroportos" placeholder="São Paulo — GRU" value="São Paulo — GRU (Guarulhos)"></div>
+    </div>
+
+    <h3>Preferências de destino</h3>
+    <div class="form-grid">
+      <div><label>Tipo de viagem</label>
+        <div class="checkbox-grid" id="plan-tipo-grid">
+          <label><input type="checkbox" value="praia" checked> 🏖️ Praia / Resort</label>
+          <label><input type="checkbox" value="cidade" checked> 🏙️ Cidade / Cultura</label>
+          <label><input type="checkbox" value="aventura" checked> 🏔️ Aventura / Natureza</label>
+          <label><input type="checkbox" value="parque"> 🎢 Parques temáticos</label>
+        </div>
+      </div>
+      <div><label>Região</label>
+        <div class="checkbox-grid" id="plan-regiao-grid">
+          <label><input type="checkbox" value="brasil" checked> 🇧🇷 Brasil</label>
+          <label><input type="checkbox" value="am-sul" checked> 🌎 América do Sul</label>
+          <label><input type="checkbox" value="caribe" checked> 🏝️ Caribe / México</label>
+          <label><input type="checkbox" value="eua-canada"> 🇺🇸 EUA / Canadá</label>
+          <label><input type="checkbox" value="europa"> 🇪🇺 Europa</label>
+          <label><input type="checkbox" value="asia-oceania"> 🌏 Ásia / Oceania</label>
+        </div>
+      </div>
+    </div>
+
+    <h3>Hospedagem (se incluída)</h3>
+    <div class="form-grid">
+      <div><label>Estrelas mín.</label>
+        <select id="plan-estrelas"><option value="3">3★+</option><option value="4" selected>4★+</option><option value="5">5★</option></select>
+      </div>
+      <div><label>Regime ideal</label>
+        <select id="plan-regime">
+          <option value="qualquer">Qualquer</option>
+          <option value="cafe" selected>Café da manhã</option>
+          <option value="meia">Meia pensão</option>
+          <option value="all-inclusive">All-Inclusive</option>
+        </select>
+      </div>
+    </div>
+
+    <h3>Voo</h3>
+    <div class="form-grid">
+      <div><label>Máx escalas</label>
+        <select id="plan-escalas"><option value="0">Só direto</option><option value="1" selected>1 escala</option><option value="2">2 escalas</option><option value="9">Qualquer</option></select>
+      </div>
+      <div><label>Bagagem</label>
+        <select id="plan-bagagem"><option value="sim" selected>Com bagagem</option><option value="nao">Sem bagagem</option></select>
+      </div>
+      <div><label>Classe</label>
+        <select id="plan-classe"><option value="economica" selected>Econômica</option><option value="premium">Premium</option><option value="executiva">Executiva</option></select>
+      </div>
+    </div>
+
+    <h3>Email para resultado</h3>
+    <div class="form-grid">
+      <div><label>Seu email <span style="color:var(--danger)">*</span></label><input id="plan-email" placeholder="seu@email.com" value="cesaogolgpt@gmail.com"></div>
+    </div>
+
+    <div style="margin-top:24px;display:flex;gap:12px;align-items:center">
+      <button class="btn" onclick="buscarPlanejador()">🌎 Descobrir destinos</button>
+      <span id="plan-status" style="font-size:13px;color:var(--muted)"></span>
+    </div>
+    <div id="plan-cmd" class="command-box" style="display:none"></div>
+
+    <div id="plan-resultados" style="margin-top:28px"></div>
+  </div>
+</div>
+
 </div>
 
 <script>
@@ -502,6 +699,303 @@ function stars(n) { return '<span class="stars">'+'★'.repeat(n)+'</span>'; }
 
 function getChecked(id) { return Array.from(document.querySelectorAll(`#${id} input[type=checkbox]:checked`)).map(c => c.value); }
 function getMulti(id) { return Array.from(document.getElementById(id).selectedOptions).map(o => o.value); }
+
+// ═══ PLANEJADOR: destinos por orçamento ═══
+const DESTINOS_POOL = [
+  // Brasil
+  {nome:'Rio de Janeiro',cod:'GIG',regiao:'brasil',tipo:['praia','cidade'],ref_preco:800},
+  {nome:'Salvador',cod:'SSA',regiao:'brasil',tipo:['praia','cidade'],ref_preco:900},
+  {nome:'Natal',cod:'NAT',regiao:'brasil',tipo:['praia'],ref_preco:1000},
+  {nome:'Recife',cod:'REC',regiao:'brasil',tipo:['praia','cidade'],ref_preco:950},
+  {nome:'Fortaleza',cod:'FOR',regiao:'brasil',tipo:['praia'],ref_preco:900},
+  {nome:'Florianópolis',cod:'FLN',regiao:'brasil',tipo:['praia','aventura'],ref_preco:700},
+  {nome:'Foz do Iguaçu',cod:'IGU',regiao:'brasil',tipo:['aventura'],ref_preco:650},
+  {nome:'Maceió',cod:'MCZ',regiao:'brasil',tipo:['praia'],ref_preco:1000},
+  {nome:'Porto Seguro',cod:'BPS',regiao:'brasil',tipo:['praia'],ref_preco:800},
+  {nome:'Fernando de Noronha',cod:'FEN',regiao:'brasil',tipo:['praia','aventura'],ref_preco:2500},
+  {nome:'Manaus',cod:'MAO',regiao:'brasil',tipo:['aventura'],ref_preco:1200},
+  {nome:'Belém',cod:'BEL',regiao:'brasil',tipo:['cidade','aventura'],ref_preco:1100},
+  // América do Sul
+  {nome:'Buenos Aires',cod:'EZE',regiao:'am-sul',tipo:['cidade'],ref_preco:1800},
+  {nome:'Santiago',cod:'SCL',regiao:'am-sul',tipo:['cidade','aventura'],ref_preco:2200},
+  {nome:'Bariloche',cod:'BRC',regiao:'am-sul',tipo:['aventura'],ref_preco:2800},
+  {nome:'Lima',cod:'LIM',regiao:'am-sul',tipo:['cidade'],ref_preco:2500},
+  {nome:'Cuzco',cod:'CUZ',regiao:'am-sul',tipo:['aventura','cidade'],ref_preco:3000},
+  {nome:'Bogotá',cod:'BOG',regiao:'am-sul',tipo:['cidade'],ref_preco:2200},
+  {nome:'Cartagena',cod:'CTG',regiao:'am-sul',tipo:['praia','cidade'],ref_preco:2800},
+  {nome:'Montevidéu',cod:'MVD',regiao:'am-sul',tipo:['cidade'],ref_preco:1600},
+  // Caribe / México
+  {nome:'Cancún',cod:'CUN',regiao:'caribe',tipo:['praia','parque'],ref_preco:5500},
+  {nome:'Punta Cana',cod:'PUJ',regiao:'caribe',tipo:['praia'],ref_preco:5000},
+  {nome:'Cidade do México',cod:'MEX',regiao:'caribe',tipo:['cidade'],ref_preco:4500},
+  {nome:'Havana',cod:'HAV',regiao:'caribe',tipo:['cidade','praia'],ref_preco:4000},
+  {nome:'Aruba',cod:'AUA',regiao:'caribe',tipo:['praia'],ref_preco:5500},
+  {nome:'San Juan',cod:'SJU',regiao:'caribe',tipo:['praia','cidade'],ref_preco:5000},
+  // EUA / Canadá
+  {nome:'Orlando',cod:'MCO',regiao:'eua-canada',tipo:['parque','cidade'],ref_preco:6000},
+  {nome:'Miami',cod:'MIA',regiao:'eua-canada',tipo:['praia','cidade'],ref_preco:5500},
+  {nome:'Nova Iorque',cod:'JFK',regiao:'eua-canada',tipo:['cidade'],ref_preco:6500},
+  {nome:'Los Angeles',cod:'LAX',regiao:'eua-canada',tipo:['cidade'],ref_preco:7000},
+  {nome:'Las Vegas',cod:'LAS',regiao:'eua-canada',tipo:['cidade'],ref_preco:6500},
+  {nome:'Toronto',cod:'YYZ',regiao:'eua-canada',tipo:['cidade'],ref_preco:6000},
+  // Europa
+  {nome:'Lisboa',cod:'LIS',regiao:'europa',tipo:['cidade'],ref_preco:7000},
+  {nome:'Porto',cod:'OPO',regiao:'europa',tipo:['cidade'],ref_preco:7200},
+  {nome:'Madri',cod:'MAD',regiao:'europa',tipo:['cidade'],ref_preco:7500},
+  {nome:'Barcelona',cod:'BCN',regiao:'europa',tipo:['cidade','praia'],ref_preco:7800},
+  {nome:'Paris',cod:'CDG',regiao:'europa',tipo:['cidade'],ref_preco:8500},
+  {nome:'Roma',cod:'FCO',regiao:'europa',tipo:['cidade'],ref_preco:8000},
+  {nome:'Londres',cod:'LHR',regiao:'europa',tipo:['cidade'],ref_preco:9000},
+  {nome:'Amsterdã',cod:'AMS',regiao:'europa',tipo:['cidade'],ref_preco:8500},
+  {nome:'Praga',cod:'PRG',regiao:'europa',tipo:['cidade'],ref_preco:7500},
+  {nome:'Atenas',cod:'ATH',regiao:'europa',tipo:['cidade','praia'],ref_preco:8000},
+  {nome:'Santorini',cod:'JTR',regiao:'europa',tipo:['praia'],ref_preco:9500},
+  // Ásia / Oceania
+  {nome:'Bangkok',cod:'BKK',regiao:'asia-oceania',tipo:['cidade','praia'],ref_preco:9000},
+  {nome:'Tóquio',cod:'NRT',regiao:'asia-oceania',tipo:['cidade'],ref_preco:12000},
+  {nome:'Maldivas',cod:'MLE',regiao:'asia-oceania',tipo:['praia'],ref_preco:15000},
+  {nome:'Dubai',cod:'DXB',regiao:'asia-oceania',tipo:['cidade'],ref_preco:10000},
+];
+
+function buscarPlanejador() {
+  const orcamento = parseFloat(document.getElementById('plan-orcamento').value);
+  if (!orcamento || orcamento < 500) { alert('Informe um orçamento válido (mínimo R$ 500).'); return; }
+  const email = document.getElementById('plan-email').value.trim();
+  if (!email || !email.includes('@')) { alert('Preencha seu email.'); return; }
+
+  const inclui = document.getElementById('plan-inclui').value;
+  const adultos = parseInt(document.getElementById('plan-adultos').value) || 2;
+  const criancas = document.getElementById('plan-criancas').value;
+  const idaDe = document.getElementById('plan-ida-de').value;
+  const idaAte = document.getElementById('plan-ida-ate').value;
+  const duracao = document.getElementById('plan-duracao').value;
+  const flex = document.getElementById('plan-flex').value;
+  const origem = document.getElementById('plan-origem').value;
+  const estrelas = document.getElementById('plan-estrelas').value;
+  const regime = document.getElementById('plan-regime').value;
+  const escalas = document.getElementById('plan-escalas').value;
+  const bagagem = document.getElementById('plan-bagagem').value;
+  const classe = document.getElementById('plan-classe').value;
+
+  const tiposSel = getChecked('plan-tipo-grid');
+  const regioesSel = getChecked('plan-regiao-grid');
+
+  // Filtrar destinos pré-elegíveis
+  const elegíveis = DESTINOS_POOL.filter(d => {
+    if (!regioesSel.includes(d.regiao)) return false;
+    if (!d.tipo.some(t => tiposSel.includes(t))) return false;
+    // Estimativa grosseira: ref_preco × adultos deve caber no orçamento
+    const paxTotal = adultos + (criancas ? criancas.split(',').length : 0);
+    if (d.ref_preco * paxTotal > orcamento * 1.5) return false;
+    return true;
+  }).sort((a,b) => a.ref_preco - b.ref_preco);
+
+  if (elegíveis.length === 0) {
+    alert('Nenhum destino encontrado com esses critérios. Tente aumentar o orçamento ou expandir as regiões.');
+    return;
+  }
+
+  // Montar comando para enviar via API
+  const L = [];
+  L.push('PLANEJADOR: ONDE POSSO IR?');
+  L.push(`Email: ${email}`);
+  L.push(`Orçamento total: R$ ${orcamento.toLocaleString('pt-BR')} (${inclui})`);
+  L.push(`Viajantes: ${adultos}A${criancas ? ' + crianças ['+criancas+']' : ''}`);
+  L.push(`Saindo de: ${origem}`);
+  L.push(`Datas ida: ${idaDe || 'flexível'} a ${idaAte || 'flexível'} | Duração: ${duracao} noites | Flexibilidade: ±${flex} dias`);
+  L.push(`Tipos: ${tiposSel.join(', ')} | Regiões: ${regioesSel.join(', ')}`);
+  L.push(`Hotel: ${estrelas}★+ · ${regime} | Voo: ${classe} · escalas max ${escalas} · bagagem: ${bagagem}`);
+  L.push('');
+  L.push('DESTINOS PRÉ-FILTRADOS PARA PESQUISAR:');
+  elegíveis.forEach((d,i) => L.push(`${i+1}. ${d.nome} (${d.cod}) — ref ~R$ ${d.ref_preco}/pessoa`));
+  L.push('');
+  L.push('INSTRUÇÕES:');
+  L.push('1. Para cada destino, pesquise VOO ida+volta (Kiwi + Lastminute) e HOTEL separadamente.');
+  L.push('2. Compare com pacote VOO+HOTEL combinado (search_flight_and_hotel_package) quando disponível.');
+  L.push('3. Mostre a MELHOR COMBINAÇÃO: o mais barato entre comprar separado vs pacote fechado.');
+  L.push('4. Preço TOTAL com impostos e taxas para todos os viajantes.');
+  L.push('5. Retorne ranking dos destinos que cabem no orçamento R$ ' + orcamento.toLocaleString('pt-BR') + ', do melhor custo-benefício ao mais caro.');
+  L.push('6. Para cada destino: nome, preço total, economia separado vs pacote (%), cia aérea, escalas, hotel (nome/estrelas/nota), link de reserva.');
+  L.push('7. Destaque o MELHOR CUSTO-BENEFÍCIO (🏆) e o DESTINO SURPRESA mais barato que o esperado.');
+
+  const cmd = L.join('\n');
+  const box = document.getElementById('plan-cmd');
+  box.style.display = 'block'; box.textContent = cmd;
+
+  // Mostrar pré-resultado visual
+  const res = document.getElementById('plan-resultados');
+  res.innerHTML = `
+    <h3>Destinos pré-selecionados (${elegíveis.length} dentro do perfil)</h3>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px">
+      ${elegíveis.map(d => `
+        <div style="background:var(--brand-soft);border-radius:10px;padding:16px;border:1px solid var(--line)">
+          <div style="font-weight:600;font-size:15px;margin-bottom:4px">${d.nome}</div>
+          <div style="font-size:12px;color:var(--muted)">${d.cod} · ${d.tipo.join(', ')}</div>
+          <div style="font-size:13px;margin-top:8px;color:var(--brand);font-weight:600">~R$ ${d.ref_preco.toLocaleString('pt-BR')}/pessoa</div>
+          <div style="font-size:11px;color:var(--muted);margin-top:2px">Estimativa ref. (preço real na busca)</div>
+        </div>
+      `).join('')}
+    </div>
+  `;
+
+  // Enviar via API
+  const btn = event.target;
+  btn.disabled = true;
+  btn.innerHTML = '⏳ Buscando destinos...';
+  const status = document.getElementById('plan-status');
+  status.textContent = `Pesquisando ${elegíveis.length} destinos... Resultado chega por email em até 15 min.`;
+
+  fetch(API_URL, {
+    method: 'POST',
+    mode: 'no-cors',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ tipo: 'planejador', comando: cmd })
+  })
+  .then(() => {
+    btn.innerHTML = '✅ Busca enviada!';
+    btn.style.background = 'var(--brand)';
+    status.textContent = '✅ Pesquisa enviada! O resultado completo chega por email. Enquanto isso, veja os destinos pré-filtrados acima.';
+  })
+  .catch(() => {
+    btn.innerHTML = '❌ Erro';
+    status.textContent = 'Erro ao enviar. Tente novamente.';
+    setTimeout(() => { btn.innerHTML = '🌎 Descobrir destinos'; btn.disabled = false; btn.style.background = ''; }, 3000);
+  });
+}
+
+// ═══ COMPARADOR DE MILHAS ═══
+function compararMilhas() {
+  const destino = document.getElementById('milhas-destino').value;
+  if (!destino) { alert('Selecione um destino.'); return; }
+
+  const origem = document.getElementById('milhas-origem').value;
+  const ida = document.getElementById('milhas-ida').value;
+  const volta = document.getElementById('milhas-volta').value;
+  const adultos = parseInt(document.getElementById('milhas-adultos').value) || 2;
+  const classe = document.getElementById('milhas-classe').value;
+
+  const saldos = {
+    latam: parseInt(document.getElementById('milhas-latam').value) || 0,
+    smiles: parseInt(document.getElementById('milhas-smiles').value) || 0,
+    azul: parseInt(document.getElementById('milhas-azul').value) || 0,
+  };
+  const custos = {
+    latam: parseFloat(document.getElementById('custo-latam').value) || 0.030,
+    smiles: parseFloat(document.getElementById('custo-smiles').value) || 0.025,
+    azul: parseFloat(document.getElementById('custo-azul').value) || 0.020,
+  };
+
+  // Tabela referência de milhas por trecho (ida+volta, econômica, 1 pessoa)
+  // Estes são valores médios — o real depende de disponibilidade
+  const tabelaMilhas = {
+    // Doméstico curto
+    'domestico-curto': { latam: 12000, smiles: 10000, azul: 10000 },
+    // Doméstico longo
+    'domestico-longo': { latam: 20000, smiles: 15000, azul: 16000 },
+    // América do Sul
+    'am-sul': { latam: 35000, smiles: 30000, azul: 32000 },
+    // Caribe / México
+    'caribe': { latam: 50000, smiles: 40000, azul: 45000 },
+    // EUA
+    'eua': { latam: 60000, smiles: 50000, azul: 55000 },
+    // Europa
+    'europa': { latam: 80000, smiles: 70000, azul: 75000 },
+    // Ásia
+    'asia': { latam: 100000, smiles: 90000, azul: 95000 },
+  };
+
+  // Detectar região do destino
+  const destLower = destino.toLowerCase();
+  let regiao = 'domestico-longo';
+  const domesticoCurto = ['sdu','cgh','gig','gru','bsb','cnf','cwb','poa','fln','vix','gyni'];
+  const amSul = ['eze','aep','scl','lim','cuz','bog','ctg','mde','mvd','pdp','asu','lpb','vvi','gye','uio'];
+  const caribe = ['cun','puj','hav','sdq','sju','aua','cur','mex','gdl','mty','sjd','mbj','nas'];
+  const eua = ['mia','mco','fll','jfk','ewr','lga','lax','sfo','las','ord','atl','dfw','iah','bos','sea','yyz','yvr'];
+  const europa = ['lis','opo','mad','bcn','cdg','ory','lhr','lgw','fco','mxp','fra','muc','ber','ams','vie','prg','bud','ath'];
+  const asia = ['bkk','nrt','hnd','kix','icn','pek','pvg','hkg','sin','mle','dxb','del','bom'];
+
+  const codMatch = destino.match(/[A-Z]{3}/);
+  const cod = codMatch ? codMatch[0].toLowerCase() : '';
+
+  if (domesticoCurto.includes(cod)) regiao = 'domestico-curto';
+  else if (amSul.includes(cod)) regiao = 'am-sul';
+  else if (caribe.includes(cod)) regiao = 'caribe';
+  else if (eua.includes(cod)) regiao = 'eua';
+  else if (europa.includes(cod)) regiao = 'europa';
+  else if (asia.includes(cod)) regiao = 'asia';
+
+  const milhasRef = tabelaMilhas[regiao];
+  const multiplicadorClasse = classe === 'executiva' ? 2.5 : 1;
+
+  // Calcular para cada programa
+  const programas = ['latam','smiles','azul'];
+  const nomes = { latam: 'LATAM Pass', smiles: 'Smiles (GOL)', azul: 'Azul Fidelidade' };
+  const cores = { latam: '#1B0088', smiles: '#FF6600', azul: '#003DA5' };
+
+  const comparativos = programas.map(p => {
+    const milhasPorPessoa = Math.round(milhasRef[p] * multiplicadorClasse);
+    const milhasTotal = milhasPorPessoa * adultos;
+    const custoRealMilhas = milhasTotal * custos[p];
+    const temSaldo = saldos[p] >= milhasTotal;
+    const milhasFaltando = temSaldo ? 0 : milhasTotal - saldos[p];
+    const custoComprarFaltando = milhasFaltando * custos[p];
+    return {
+      programa: nomes[p],
+      cor: cores[p],
+      milhasPorPessoa,
+      milhasTotal,
+      custoRealMilhas,
+      temSaldo,
+      saldo: saldos[p],
+      milhasFaltando,
+      custoComprarFaltando,
+    };
+  });
+
+  // Buscar preço em dinheiro via API
+  const cmd = [
+    'COMPARAÇÃO MILHAS vs DINHEIRO',
+    `Email: cesaogolgpt@gmail.com`,
+    `Rota: ${origem} → ${destino}`,
+    `Datas: ${ida} → ${volta} | ${adultos} adultos | Classe: ${classe}`,
+    '',
+    'PESQUISE:',
+    `1. Preço em DINHEIRO (R$) via Kiwi + Lastminute para LATAM, GOL e Azul separadamente`,
+    `2. Preço em MILHAS nos sites: latampass.latam.com, smiles.com.br, pontos.voeazul.com.br`,
+    '',
+    'RETORNE tabela comparativa:',
+    '| Programa | Preço R$ | Milhas necessárias | Custo/milha | Veredicto |',
+    `Saldos do usuário: LATAM ${saldos.latam} pts, Smiles ${saldos.smiles} milhas, Azul ${saldos.azul} pts`,
+    `Custo de aquisição: LATAM R$ ${custos.latam}/pt, Smiles R$ ${custos.smiles}/mi, Azul R$ ${custos.azul}/pt`,
+    'Recomende a MELHOR OPÇÃO considerando saldo disponível e custo de aquisição.',
+  ].join('\n');
+
+  // Mostrar resultado visual estimado
+  const res = document.getElementById('milhas-resultado');
+  res.innerHTML = `
+    <h3>Estimativa rápida (valores médios — resultado exato chega por e-mail)</h3>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px">
+      ${comparativos.map(c => `
+        <div style="border:2px solid ${c.cor}33;border-radius:12px;padding:18px;background:${c.cor}08">
+          <div style="font-weight:700;font-size:16px;color:${c.cor};margin-bottom:8px">${c.programa}</div>
+          <div style="font-size:13px;margin-bottom:4px">Milhas necessárias: <strong>${c.milhasTotal.toLocaleString('pt-BR')}</strong></div>
+          <div style="font-size:13px;margin-bottom:4px">Seu saldo: <strong>${c.saldo.toLocaleString('pt-BR')}</strong> ${c.temSaldo ? '✅ Suficiente!' : '❌ Faltam ' + c.milhasFaltando.toLocaleString('pt-BR')}</div>
+          <div style="font-size:13px;margin-bottom:4px">Custo real das milhas: <strong style="color:${c.cor}">R$ ${c.custoRealMilhas.toLocaleString('pt-BR',{minimumFractionDigits:0,maximumFractionDigits:0})}</strong></div>
+          ${!c.temSaldo ? `<div style="font-size:12px;color:var(--muted)">Custo para comprar as que faltam: R$ ${c.custoComprarFaltando.toLocaleString('pt-BR',{minimumFractionDigits:0,maximumFractionDigits:0})}</div>` : ''}
+        </div>
+      `).join('')}
+    </div>
+    <p style="font-size:12px;color:var(--muted);margin-top:12px">* Milhas estimadas com base em tabelas médias. O valor real depende de disponibilidade e sazonalidade. Resultado detalhado com preços reais chega por e-mail.</p>
+  `;
+
+  // Enviar busca detalhada via API
+  fetch(API_URL, {
+    method: 'POST',
+    mode: 'no-cors',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ tipo: 'milhas', comando: cmd })
+  });
+}
 
 function validarEmail(prefix) {
   const email = document.getElementById(`${prefix}-email`)?.value?.trim();
@@ -597,6 +1091,64 @@ function enviarEmail(prefix) {
   });
 }
 
+// ═══ PREVISÃO DE PREÇO (tendência + recomendação) ═══
+function analisarTendencia(regs, modo) {
+  if (regs.length < 2) return { texto: 'Aguardando mais dados', icone: '⏳', cor: 'var(--muted)', reco: 'Coletando histórico...', confianca: 0 };
+  const campo = modo === 'hotel' ? 'preco_min_hotel_noite' : 'preco_min_voo';
+  const precos = regs.map(r => r[campo]).filter(p => p && p > 0);
+  if (precos.length < 2) return { texto: 'Dados insuficientes', icone: '⏳', cor: 'var(--muted)', reco: '', confianca: 0 };
+
+  const ultimo = precos[precos.length - 1];
+  const penultimo = precos[precos.length - 2];
+  const media = precos.reduce((a,b) => a+b, 0) / precos.length;
+  const minimo = Math.min(...precos);
+  const maximo = Math.max(...precos);
+  const variacao = ((ultimo - penultimo) / penultimo) * 100;
+  const distMin = ((ultimo - minimo) / minimo) * 100;
+
+  // Tendência dos últimos 3+ registros
+  let tendencia = 'estavel';
+  if (precos.length >= 3) {
+    const recentes = precos.slice(-3);
+    const subindo = recentes[2] > recentes[1] && recentes[1] > recentes[0];
+    const descendo = recentes[2] < recentes[1] && recentes[1] < recentes[0];
+    if (subindo) tendencia = 'subindo';
+    else if (descendo) tendencia = 'descendo';
+  } else {
+    if (variacao > 3) tendencia = 'subindo';
+    else if (variacao < -3) tendencia = 'descendo';
+  }
+
+  // Recomendação
+  let reco, icone, cor;
+  if (ultimo === minimo || distMin < 2) {
+    icone = '🟢'; cor = '#16a34a';
+    reco = '🛒 Preço no mínimo — compre agora!';
+  } else if (tendencia === 'descendo') {
+    icone = '📉'; cor = '#16a34a';
+    reco = '⏳ Preço caindo — aguarde mais um pouco';
+  } else if (tendencia === 'subindo' && distMin > 10) {
+    icone = '📈'; cor = 'var(--danger)';
+    reco = '⚠️ Preço subindo — considere comprar logo';
+  } else if (tendencia === 'subindo') {
+    icone = '📈'; cor = 'var(--accent)';
+    reco = '👀 Preço subindo levemente — fique atento';
+  } else {
+    icone = '➡️'; cor = 'var(--muted)';
+    reco = '😌 Preço estável — sem pressa, mas monitore';
+  }
+
+  const textoVar = variacao > 0 ? `+${variacao.toFixed(1)}%` : `${variacao.toFixed(1)}%`;
+  const confianca = Math.min(precos.length * 15, 90);
+
+  return {
+    texto: `${icone} ${tendencia === 'subindo' ? 'Subindo' : tendencia === 'descendo' ? 'Caindo' : 'Estável'} (${textoVar})`,
+    icone, cor, reco, confianca,
+    distMin: distMin.toFixed(0),
+    media: media
+  };
+}
+
 function renderRotas() {
   const container = document.getElementById('rotas-lista');
   let ativas = rotasData.rotas.filter(r => r.ativa);
@@ -635,6 +1187,17 @@ function renderRotas() {
           ${r.modo!=='hotel'?`<div class="meta"><div class="meta-label">Ida</div><div class="meta-value">${r.ida_hora_inicio||'—'}–${r.ida_hora_fim||'—'}</div></div><div class="meta"><div class="meta-label">Volta</div><div class="meta-value">${r.volta_hora_inicio||'—'}–${r.volta_hora_fim||'—'}</div></div>`:''}
           ${r.modo!=='voo'?`<div class="meta"><div class="meta-label">Hotel</div><div class="meta-value">${stars(r.hotel_estrelas_min||3)} · ${r.hotel_regime||'—'}</div></div>`:''}
         </div>
+        ${(() => {
+          const t = analisarTendencia(regs, r.modo);
+          return t.confianca > 0 ? `
+          <div style="background:${t.cor}11;border:1px solid ${t.cor}33;border-radius:10px;padding:12px 16px;margin:12px 0;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px">
+            <div>
+              <span style="font-weight:600;color:${t.cor}">${t.texto}</span>
+              <span style="margin-left:12px;font-size:13px;color:var(--muted)">${t.distMin > 0 ? t.distMin+'% acima do mínimo' : 'No mínimo!'}</span>
+            </div>
+            <div style="font-size:13px;font-weight:500">${t.reco}</div>
+          </div>` : '';
+        })()}
         <div class="chart-container"><canvas id="chart-${r.id}"></canvas></div>
         <h3>Últimos registros</h3>
         <table>
