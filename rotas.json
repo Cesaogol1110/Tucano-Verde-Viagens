@@ -17,7 +17,10 @@
       "volta_hora_inicio": "12:00",
       "volta_hora_fim": "18:00",
       "adultos": 2,
-      "criancas_idades": [9, 6],
+      "criancas_idades": [
+        9,
+        6
+      ],
       "bagagem_despachada": true,
       "incluir_hotel": true,
       "hotel_estrelas_min": 4,
@@ -43,7 +46,10 @@
       "volta_hora_inicio": "11:00",
       "volta_hora_fim": "15:00",
       "adultos": 2,
-      "criancas_idades": [],
+      "criancas_idades": [
+        9,
+        6
+      ],
       "bagagem_despachada": true,
       "incluir_hotel": false,
       "noites": 3,
