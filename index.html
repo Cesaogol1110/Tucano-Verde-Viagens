@@ -284,9 +284,7 @@
     </div>
 
     <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:20px">
-      <button class="primary" onclick="gerarComando('spot')">Gerar comando</button>
-      <button class="primary" style="background:#25D366" onclick="enviarWhats('spot')">📱 Enviar por WhatsApp</button>
-      <button class="primary" style="background:#4b5563" onclick="enviarEmail('spot')">✉️ Enviar por Email</button>
+      <button class="primary" onclick="enviarEmail('spot')">✉️ Enviar busca</button>
     </div>
     <div id="spot-cmd" class="command-box" style="display:none"></div>
   </div>
@@ -389,11 +387,9 @@
     </div>
 
     <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:20px">
-      <button class="primary" onclick="gerarComando('rot')">Gerar comando</button>
-      <button class="primary" style="background:#25D366" onclick="enviarWhats('rot')">📱 Enviar por WhatsApp</button>
-      <button class="primary" style="background:#4b5563" onclick="enviarEmail('rot')">✉️ Enviar por Email</button>
+      <button class="primary" onclick="enviarEmail('rot')">✉️ Criar rotina</button>
     </div>
-    <p class="hint" style="margin-top:10px">Clica em enviar e escolhe Claude/você mesmo no WhatsApp ou Email. Eu salvo a rotina no dashboard.</p>
+    <p class="hint" style="margin-top:10px">A rotina será adicionada automaticamente em até 1 hora.</p>
     <div id="rot-cmd" class="command-box" style="display:none"></div>
   </div>
 </div>
