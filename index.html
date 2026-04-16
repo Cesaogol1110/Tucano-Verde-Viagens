@@ -547,7 +547,8 @@ function renderRotas() {
     const dataMin = r.modo === 'hotel' ? minHist.data_preco_min_hotel_noite : minHist.data_preco_min_voo;
     const eh = precoRef && precoRef === minRef && ultimo.data === dataMin;
     const badge = eh ? '<span class="badge badge-champion">Mínimo histórico</span>' : (minRef ? `<span class="badge badge-muted">Mín: ${fmtBRL(minRef)} · ${dataMin}</span>` : '');
-    const titulo = r.modo === 'hotel' ? `${r.hotel_cidade||r.destino}` : `${r.origem} → ${r.destino}`;
+    const apelido = r.nome ? `<span style="color:var(--muted);font-size:15px;font-weight:400"> · ${r.nome}</span>` : '';
+    const titulo = (r.modo === 'hotel' ? `${r.hotel_cidade||r.destino}` : `${r.origem} → ${r.destino}`) + apelido;
     const dataLbl = r.modo === 'hotel' ? `${r.checkin||r.data_ida} → ${r.checkout||r.data_volta}` : `${r.data_ida} → ${r.data_volta}`;
     return `
       <div class="card ${eh?'champion':''}">
