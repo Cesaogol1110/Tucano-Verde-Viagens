@@ -501,13 +501,35 @@ function enviarWhats(prefix) {
   window.open(url, '_blank');
 }
 
+const API_URL = 'https://script.google.com/macros/s/AKfycbw6h5KGHqACXluNaCCpKniXhr9LH9mDeX9XYWxd_ufYfE-Qv957Y7_gojYl1gF3PJZi/exec';
+
 function enviarEmail(prefix) {
-  const txt = montarTexto(prefix);
+  if (!validarEmail(prefix)) return;
+  gerarComando(prefix);
+  const txt = document.getElementById(`${prefix}-cmd`).textContent;
   if (!txt) return;
-  const subj = prefix === 'rot' ? 'Nova rotina Tucano Verde' : 'Busca spot Tucano Verde';
-  const dest = document.getElementById(`${prefix}-email`)?.value || 'cesaogolgpt@gmail.com';
-  const url = 'mailto:' + encodeURIComponent(dest) + '?subject=' + encodeURIComponent(subj) + '&body=' + encodeURIComponent(txt);
-  window.location.href = url;
+  const btn = event.target;
+  const textoOriginal = btn.innerHTML;
+  btn.disabled = true;
+  btn.innerHTML = '⏳ Enviando...';
+  btn.style.opacity = '0.6';
+
+  fetch(API_URL, {
+    method: 'POST',
+    mode: 'no-cors',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ tipo: prefix === 'rot' ? 'rotina' : 'spot', comando: txt })
+  })
+  .then(() => {
+    btn.innerHTML = '✅ Rotina enviada!';
+    btn.style.background = 'var(--brand)';
+    setTimeout(() => { btn.innerHTML = textoOriginal; btn.disabled = false; btn.style.opacity = '1'; }, 4000);
+  })
+  .catch(() => {
+    btn.innerHTML = '❌ Erro — tente novamente';
+    btn.style.background = 'var(--danger)';
+    setTimeout(() => { btn.innerHTML = textoOriginal; btn.disabled = false; btn.style.opacity = '1'; btn.style.background = ''; }, 4000);
+  });
 }
 
 function renderRotas() {
