@@ -319,6 +319,7 @@
         <div><label>Cancelamento grátis</label><select id="spot-cancel"><option value="nao">Não importa</option><option value="sim" selected>Sim</option></select></div>
         <div><label>Sem pré-pagamento</label><select id="spot-prepago"><option value="nao">Não importa</option><option value="sim">Sim</option></select></div>
         <div><label>Quarto família</label><select id="spot-familia"><option value="nao">Não importa</option><option value="sim" selected>Sim</option></select></div>
+        <div style="grid-column:1/-1"><label>Hotel específico (opcional)</label><input id="spot-hotel-especifico" placeholder="Ex: Hotel Xcaret, Iberostar Cancún, etc."></div>
       </div>
       <details>
         <summary>Comodidades</summary>
@@ -585,10 +586,12 @@
       </div>
     </div>
 
-    <h3>Origem</h3>
+    <h3>Origem e destino</h3>
     <div class="form-grid">
       <div><label>Saindo de</label><input id="plan-origem" list="aeroportos" placeholder="São Paulo — GRU" value="São Paulo — GRU (Guarulhos)"></div>
+      <div><label>Destino específico (opcional)</label><input id="plan-destino" list="aeroportos" placeholder="Deixe vazio p/ sugestões automáticas"></div>
     </div>
+    <p class="hint" style="margin-top:4px;font-size:12px;color:var(--muted)">Se preencher o destino, a busca será só para essa cidade. Se deixar vazio, o sistema sugere os melhores destinos dentro do seu orçamento.</p>
 
     <h3>Preferências de destino</h3>
     <div class="form-grid">
@@ -779,16 +782,21 @@ function buscarPlanejador() {
 
   const tiposSel = getChecked('plan-tipo-grid');
   const regioesSel = getChecked('plan-regiao-grid');
+  const destinoEspecifico = (document.getElementById('plan-destino').value || '').trim();
 
-  // Filtrar destinos pré-elegíveis
-  const elegíveis = DESTINOS_POOL.filter(d => {
-    if (!regioesSel.includes(d.regiao)) return false;
-    if (!d.tipo.some(t => tiposSel.includes(t))) return false;
-    // Estimativa grosseira: ref_preco × adultos deve caber no orçamento
-    const paxTotal = adultos + (criancas ? criancas.split(',').length : 0);
-    if (d.ref_preco * paxTotal > orcamento * 1.5) return false;
-    return true;
-  }).sort((a,b) => a.ref_preco - b.ref_preco);
+  // Se destino específico, não filtra pool
+  let elegíveis = [];
+  if (destinoEspecifico) {
+    elegíveis = [{nome: destinoEspecifico, cod: destinoEspecifico.match(/[A-Z]{3}/)?.[0] || '???', tipo: tiposSel, ref_preco: 0}];
+  } else {
+    elegíveis = DESTINOS_POOL.filter(d => {
+      if (!regioesSel.includes(d.regiao)) return false;
+      if (!d.tipo.some(t => tiposSel.includes(t))) return false;
+      const paxTotal = adultos + (criancas ? criancas.split(',').length : 0);
+      if (d.ref_preco * paxTotal > orcamento * 1.5) return false;
+      return true;
+    }).sort((a,b) => a.ref_preco - b.ref_preco);
+  }
 
   if (elegíveis.length === 0) {
     alert('Nenhum destino encontrado com esses critérios. Tente aumentar o orçamento ou expandir as regiões.');
@@ -797,26 +805,41 @@ function buscarPlanejador() {
 
   // Montar comando para enviar via API
   const L = [];
-  L.push('PLANEJADOR: ONDE POSSO IR?');
+  if (destinoEspecifico) {
+    L.push('PLANEJADOR: BUSCA DE DESTINO ESPECÍFICO');
+  } else {
+    L.push('PLANEJADOR: ONDE POSSO IR?');
+  }
   L.push(`Email: ${email}`);
   L.push(`Orçamento total: R$ ${orcamento.toLocaleString('pt-BR')} (${inclui})`);
   L.push(`Viajantes: ${adultos}A${criancas ? ' + crianças ['+criancas+']' : ''}`);
   L.push(`Saindo de: ${origem}`);
+  if (destinoEspecifico) L.push(`DESTINO: ${destinoEspecifico}`);
   L.push(`Datas ida: ${idaDe || 'flexível'} a ${idaAte || 'flexível'} | Duração: ${duracao} noites | Flexibilidade: ±${flex} dias`);
   L.push(`Tipos: ${tiposSel.join(', ')} | Regiões: ${regioesSel.join(', ')}`);
   L.push(`Hotel: ${estrelas}★+ · ${regime} | Voo: ${classe} · escalas max ${escalas} · bagagem: ${bagagem}`);
   L.push('');
-  L.push('DESTINOS PRÉ-FILTRADOS PARA PESQUISAR:');
-  elegíveis.forEach((d,i) => L.push(`${i+1}. ${d.nome} (${d.cod}) — ref ~R$ ${d.ref_preco}/pessoa`));
-  L.push('');
-  L.push('INSTRUÇÕES:');
-  L.push('1. Para cada destino, pesquise VOO ida+volta (Kiwi + Lastminute) e HOTEL separadamente.');
-  L.push('2. Compare com pacote VOO+HOTEL combinado (search_flight_and_hotel_package) quando disponível.');
-  L.push('3. Mostre a MELHOR COMBINAÇÃO: o mais barato entre comprar separado vs pacote fechado.');
-  L.push('4. Preço TOTAL com impostos e taxas para todos os viajantes.');
-  L.push('5. Retorne ranking dos destinos que cabem no orçamento R$ ' + orcamento.toLocaleString('pt-BR') + ', do melhor custo-benefício ao mais caro.');
-  L.push('6. Para cada destino: nome, preço total, economia separado vs pacote (%), cia aérea, escalas, hotel (nome/estrelas/nota), link de reserva.');
-  L.push('7. Destaque o MELHOR CUSTO-BENEFÍCIO (🏆) e o DESTINO SURPRESA mais barato que o esperado.');
+  if (destinoEspecifico) {
+    L.push('INSTRUÇÕES:');
+    L.push(`1. Pesquise VOO ida+volta (Kiwi + Lastminute) para ${destinoEspecifico}.`);
+    L.push('2. Pesquise HOTEL separado e pacote VOO+HOTEL combinado.');
+    L.push('3. Compare separado vs pacote e mostre a MELHOR opção.');
+    L.push('4. Preço TOTAL com impostos e taxas para todos os viajantes.');
+    L.push('5. Mostre: preço total, cia aérea, escalas, hotel (nome/estrelas/nota), link de reserva.');
+    L.push('6. Se possível, mostre 3 opções de hotel com preços diferentes.');
+  } else {
+    L.push('DESTINOS PRÉ-FILTRADOS PARA PESQUISAR:');
+    elegíveis.forEach((d,i) => L.push(`${i+1}. ${d.nome} (${d.cod}) — ref ~R$ ${d.ref_preco}/pessoa`));
+    L.push('');
+    L.push('INSTRUÇÕES:');
+    L.push('1. Para cada destino, pesquise VOO ida+volta (Kiwi + Lastminute) e HOTEL separadamente.');
+    L.push('2. Compare com pacote VOO+HOTEL combinado (search_flight_and_hotel_package) quando disponível.');
+    L.push('3. Mostre a MELHOR COMBINAÇÃO: o mais barato entre comprar separado vs pacote fechado.');
+    L.push('4. Preço TOTAL com impostos e taxas para todos os viajantes.');
+    L.push('5. Retorne ranking dos destinos que cabem no orçamento R$ ' + orcamento.toLocaleString('pt-BR') + ', do melhor custo-benefício ao mais caro.');
+    L.push('6. Para cada destino: nome, preço total, economia separado vs pacote (%), cia aérea, escalas, hotel (nome/estrelas/nota), link de reserva.');
+    L.push('7. Destaque o MELHOR CUSTO-BENEFÍCIO (🏆) e o DESTINO SURPRESA mais barato que o esperado.');
+  }
 
   const cmd = L.join('\n');
   const box = document.getElementById('plan-cmd');
@@ -824,26 +847,37 @@ function buscarPlanejador() {
 
   // Mostrar pré-resultado visual
   const res = document.getElementById('plan-resultados');
-  res.innerHTML = `
-    <h3>Destinos pré-selecionados (${elegíveis.length} dentro do perfil)</h3>
-    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px">
-      ${elegíveis.map(d => `
-        <div style="background:var(--brand-soft);border-radius:10px;padding:16px;border:1px solid var(--line)">
-          <div style="font-weight:600;font-size:15px;margin-bottom:4px">${d.nome}</div>
-          <div style="font-size:12px;color:var(--muted)">${d.cod} · ${d.tipo.join(', ')}</div>
-          <div style="font-size:13px;margin-top:8px;color:var(--brand);font-weight:600">~R$ ${d.ref_preco.toLocaleString('pt-BR')}/pessoa</div>
-          <div style="font-size:11px;color:var(--muted);margin-top:2px">Estimativa ref. (preço real na busca)</div>
-        </div>
-      `).join('')}
-    </div>
-  `;
+  if (destinoEspecifico) {
+    res.innerHTML = `
+      <div style="background:var(--accent-soft);border-radius:10px;padding:20px;border:1px solid var(--accent)">
+        <div style="font-weight:600;font-size:17px;margin-bottom:4px">🎯 Buscando: ${destinoEspecifico}</div>
+        <div style="font-size:13px;color:var(--muted);margin-top:4px">Pesquisa direta — voo + hotel + pacote combinado</div>
+      </div>
+    `;
+  } else {
+    res.innerHTML = `
+      <h3>Destinos pré-selecionados (${elegíveis.length} dentro do perfil)</h3>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px">
+        ${elegíveis.map(d => `
+          <div style="background:var(--brand-soft);border-radius:10px;padding:16px;border:1px solid var(--line)">
+            <div style="font-weight:600;font-size:15px;margin-bottom:4px">${d.nome}</div>
+            <div style="font-size:12px;color:var(--muted)">${d.cod} · ${d.tipo.join(', ')}</div>
+            <div style="font-size:13px;margin-top:8px;color:var(--brand);font-weight:600">~R$ ${d.ref_preco.toLocaleString('pt-BR')}/pessoa</div>
+            <div style="font-size:11px;color:var(--muted);margin-top:2px">Estimativa ref. (preço real na busca)</div>
+          </div>
+        `).join('')}
+      </div>
+    `;
+  }
 
   // Enviar via API
   const btn = event.target;
   btn.disabled = true;
   btn.innerHTML = '⏳ Buscando destinos...';
   const status = document.getElementById('plan-status');
-  status.textContent = `Pesquisando ${elegíveis.length} destinos... Resultado chega por email em até 15 min.`;
+  status.textContent = destinoEspecifico
+    ? `Pesquisando ${destinoEspecifico}... Resultado chega por email em até 5 min.`
+    : `Pesquisando ${elegíveis.length} destinos... Resultado chega por email em até 15 min.`;
 
   fetch(API_URL, {
     method: 'POST',
@@ -1036,6 +1070,8 @@ function gerarComando(prefix) {
     if (g('preco-max')) L.push(`Preço máx/noite: R$ ${g('preco-max')}`);
     L.push(`Cancelamento grátis: ${g('cancel')}${prefix==='spot'?'  |  Sem pré-pagamento: '+g('prepago'):''}  |  Quarto família: ${g('familia')}`);
     const com = getChecked(`${prefix}-comodidades`); if (com.length) L.push(`Comodidades: ${com.join(', ')}`);
+    const hotelEsp = prefix === 'spot' ? (document.getElementById('spot-hotel-especifico')?.value || '').trim() : '';
+    if (hotelEsp) L.push(`🎯 Hotel específico: ${hotelEsp}`);
   }
 
   L.push('Retornar em R$ (preço TOTAL c/ impostos e taxas) com top 5 voos (Kiwi+Lastminute), top 3 pacotes e top 10 hotéis. Incluir escalas, duração, nota, link.');
