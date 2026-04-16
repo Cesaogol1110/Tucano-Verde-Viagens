@@ -193,6 +193,10 @@
     <h2>Busca spot</h2>
     <p class="lead" style="margin-bottom:20px">Pesquisa avulsa. Não salva no histórico.</p>
 
+    <div class="form-grid two" style="margin-bottom:20px">
+      <div><label>Seu email <span style="color:var(--danger)">*</span></label><input id="spot-email" placeholder="seu@email.com" required></div>
+    </div>
+
     <div class="mode-selector">
       <button type="button" class="mode-btn active" data-modo="voo" onclick="setModo(event,'spot','voo')">Só passagem</button>
       <button type="button" class="mode-btn" data-modo="voo-hotel" onclick="setModo(event,'spot','voo-hotel')">Passagem + Hotel</button>
@@ -309,7 +313,7 @@
         </select>
       </div>
       <div><label>Nome amigável</label><input id="rot-nome" placeholder="Aniversário Orlando"></div>
-      <div><label>Email notificação</label><input id="rot-email" value="cesaogolgpt@gmail.com" placeholder="pessoa@email.com"></div>
+      <div><label>Email notificação <span style="color:var(--danger)">*</span></label><input id="rot-email" value="cesaogolgpt@gmail.com" placeholder="pessoa@email.com" required></div>
     </div>
 
     <div id="rot-voo-block">
@@ -439,11 +443,22 @@ function stars(n) { return '<span class="stars">'+'★'.repeat(n)+'</span>'; }
 function getChecked(id) { return Array.from(document.querySelectorAll(`#${id} input[type=checkbox]:checked`)).map(c => c.value); }
 function getMulti(id) { return Array.from(document.getElementById(id).selectedOptions).map(o => o.value); }
 
+function validarEmail(prefix) {
+  const email = document.getElementById(`${prefix}-email`)?.value?.trim();
+  if (!email || !email.includes('@') || !email.includes('.')) {
+    alert('Preencha o email antes de continuar.');
+    document.getElementById(`${prefix}-email`)?.focus();
+    return false;
+  }
+  return true;
+}
+
 function gerarComando(prefix) {
+  if (!validarEmail(prefix)) return;
   const modo = modoSelecionado[prefix];
   const g = id => document.getElementById(`${prefix}-${id}`)?.value || '';
   const L = [];
-  if (prefix === 'spot') L.push(`BUSCA SPOT — ${labelModo(modo)}`);
+  if (prefix === 'spot') L.push(`BUSCA SPOT — ${labelModo(modo)}\nEmail: ${g('email')}`);
   else { L.push(`NOVA ROTINA "${g('nome')||'(sem nome)'}" — ${labelModo(modo)}`); L.push(`Dono: ${g('dono')||'—'} · Email: ${g('email')||'—'}`); }
 
   if (modo !== 'hotel') {
@@ -478,20 +493,24 @@ function gerarComando(prefix) {
 function labelModo(m) { return m === 'voo' ? 'SÓ PASSAGEM' : (m === 'hotel' ? 'SÓ HOTEL' : 'PASSAGEM + HOTEL'); }
 
 function montarTexto(prefix) {
+  if (!validarEmail(prefix)) return null;
   gerarComando(prefix);
   return document.getElementById(`${prefix}-cmd`).textContent;
 }
 
 function enviarWhats(prefix) {
   const txt = montarTexto(prefix);
+  if (!txt) return;
   const url = 'https://wa.me/?text=' + encodeURIComponent(txt);
   window.open(url, '_blank');
 }
 
 function enviarEmail(prefix) {
   const txt = montarTexto(prefix);
+  if (!txt) return;
   const subj = prefix === 'rot' ? 'Nova rotina Tucano Verde' : 'Busca spot Tucano Verde';
-  const url = 'mailto:cesaogolgpt@gmail.com?subject=' + encodeURIComponent(subj) + '&body=' + encodeURIComponent(txt);
+  const dest = document.getElementById(`${prefix}-email`)?.value || 'cesaogolgpt@gmail.com';
+  const url = 'mailto:' + encodeURIComponent(dest) + '?subject=' + encodeURIComponent(subj) + '&body=' + encodeURIComponent(txt);
   window.location.href = url;
 }
 
