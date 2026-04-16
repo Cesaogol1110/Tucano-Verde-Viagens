@@ -1,0 +1,61 @@
+{
+  "timestamp": "2026-04-16T17:30:00-03:00",
+  "query": "Planejador — R$ 20.000 — 2A+2C — Dez/2026",
+  "resultados": [
+    {
+      "destino": "Rio de Janeiro",
+      "preco_total": 6865,
+      "moeda": "BRL",
+      "hotel": "Novotel RJ Santos Dumont",
+      "estrelas": 4,
+      "nota": 95,
+      "voo": "GOL direto 1h05",
+      "link": "https://www.lastminute.com/s/tsx/372920?pageType=review&destination=GIG&dateFrom=2026-12-04&dateTo=2026-12-11",
+      "cancelamento": "Grátis até 01/12/2026"
+    },
+    {
+      "destino": "Florianópolis",
+      "preco_total": 8205,
+      "moeda": "BRL",
+      "hotel": "Slaviero Baía Norte",
+      "estrelas": 4,
+      "nota": 84,
+      "voo": "GOL direto 1h20",
+      "link": "https://www.lastminute.com/s/tsx/197169?pageType=review&destination=FLN&dateFrom=2026-12-04&dateTo=2026-12-11",
+      "cancelamento": "Grátis até 02/12/2026"
+    },
+    {
+      "destino": "Salvador",
+      "preco_total": 8655,
+      "moeda": "BRL",
+      "hotel": "Gran Hotel Stella Maris Resort",
+      "estrelas": 4,
+      "nota": 90,
+      "voo": "GOL direto 2h20",
+      "link": "https://www.lastminute.com/s/tsx/187787?pageType=review&destination=SSA&dateFrom=2026-12-04&dateTo=2026-12-11",
+      "cancelamento": "Grátis até 30/11/2026"
+    },
+    {
+      "destino": "Recife",
+      "preco_total": 10075,
+      "moeda": "BRL",
+      "hotel": "Kastel Manibu Boa Viagem",
+      "estrelas": 4,
+      "nota": 88,
+      "voo": "AZUL direto 3h",
+      "link": "https://www.lastminute.com/s/tsx/91835?pageType=review&destination=REC&dateFrom=2026-12-04&dateTo=2026-12-11",
+      "cancelamento": "Grátis até 02/12/2026"
+    },
+    {
+      "destino": "Natal",
+      "preco_total": 10825,
+      "moeda": "BRL",
+      "hotel": "Pontalmar Praia Hotel",
+      "estrelas": 4,
+      "nota": 86,
+      "voo": "GOL direto 3h20",
+      "link": "https://www.lastminute.com/s/tsx/1552678?pageType=review&destination=NAT&dateFrom=2026-12-04&dateTo=2026-12-11",
+      "cancelamento": "Grátis até 17/11/2026"
+    }
+  ]
+}
