@@ -602,9 +602,30 @@ function renderRotas() {
 
 function removerRota(id) {
   const r = rotasData.rotas.find(x => x.id === id);
-  const cmd = `Remover rotina "${r.origem||r.hotel_cidade} → ${r.destino||''}" (id: ${id}).`;
-  navigator.clipboard?.writeText(cmd);
-  alert('Comando copiado. Cole no chat do Claude:\n\n' + cmd);
+  if (!r) return;
+  const titulo = r.modo === 'hotel' ? (r.hotel_cidade||r.destino) : `${r.origem} → ${r.destino}`;
+  if (!confirm(`Remover rotina "${titulo}"?\n\nA remoção será processada em até 1 hora.`)) return;
+
+  const cmd = `REMOVER ROTINA\nID: ${id}\nRota: ${titulo}\nDono: ${r.dono||'—'}\nEmail: ${r.dono_email||'—'}`;
+  const btn = event.target;
+  btn.disabled = true;
+  btn.textContent = '⏳ Removendo...';
+
+  fetch(API_URL, {
+    method: 'POST',
+    mode: 'no-cors',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ tipo: 'remover', comando: cmd })
+  })
+  .then(() => {
+    btn.textContent = '✅ Solicitação enviada';
+    btn.style.color = 'var(--brand)';
+    btn.style.borderColor = 'var(--brand)';
+  })
+  .catch(() => {
+    btn.textContent = '❌ Erro';
+    setTimeout(() => { btn.textContent = 'Remover'; btn.disabled = false; }, 3000);
+  });
 }
 
 renderRotas();
