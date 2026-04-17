@@ -46,6 +46,38 @@
       "duracao_volta_min": 65,
       "link": "https://on.kiwi.com/NN4Lke",
       "cambio_eur_brl": 5.95
+    },
+    {
+      "rota_id": "sp-cun-jul2026",
+      "data": "2026-04-17",
+      "preco_min_voo": 14261,
+      "preco_medio_voo_top5": 14509,
+      "preco_min_pacote": 25919,
+      "preco_min_hotel_noite": 3703,
+      "fonte_min": "Lastminute",
+      "companhia": "Avianca",
+      "escalas_ida": "1 em BOG",
+      "escalas_volta": "1 em BOG",
+      "duracao_ida_min": 675,
+      "duracao_volta_min": 1570,
+      "link": "https://www.lastminute.ie/msr/route/searching.do?departureAirport=SAO&arrivalAirport=CUN&outboundDay=25&outboundMonthYear=072026&returnDay=01&returnMonthYear=082026&adults=2&childs=2&infants=0&COBRANDED=LMNEN_LLMPROJECTEN&currency=EUR&url=search3.do&roundtrip=true&classFlight=Y&fareType=",
+      "cambio_eur_brl": 5.95
+    },
+    {
+      "rota_id": "sp-rj-abr2026",
+      "data": "2026-04-17",
+      "preco_min_voo": 12341,
+      "preco_medio_voo_top5": 12368,
+      "preco_min_pacote": null,
+      "preco_min_hotel_noite": null,
+      "fonte_min": "Lastminute",
+      "companhia": "GOL Linhas Aéreas",
+      "escalas_ida": "direto",
+      "escalas_volta": "direto",
+      "duracao_ida_min": 55,
+      "duracao_volta_min": 65,
+      "link": "https://www.lastminute.ie/msr/route/searching.do?departureAirport=CGH&arrivalAirport=SDU&outboundDay=18&outboundMonthYear=042026&returnDay=21&returnMonthYear=042026&adults=2&childs=2&infants=0&COBRANDED=LMNEN_LLMPROJECTEN&currency=EUR&url=search3.do&roundtrip=true&classFlight=Y&fareType=",
+      "cambio_eur_brl": 5.95
     }
   ],
   "minimos_historicos": {
@@ -56,8 +88,8 @@
       "data_preco_min_pacote": "2026-04-16"
     },
     "sp-rj-abr2026": {
-      "preco_min_voo": 17402,
-      "data_preco_min_voo": "2026-04-16",
+      "preco_min_voo": 12341,
+      "data_preco_min_voo": "2026-04-17",
       "preco_min_pacote": null,
       "data_preco_min_pacote": null
     }
