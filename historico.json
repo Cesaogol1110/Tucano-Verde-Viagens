@@ -83,7 +83,7 @@
       "rota_id": "sp-cun-jul2026",
       "data": "2026-04-26",
       "preco_min_voo": 13716,
-      "preco_medio_voo_top5": 14001,
+      "preco_medio_voo_top5": 14245,
       "preco_min_pacote": 25371,
       "preco_min_hotel_noite": 3624,
       "fonte_min": "Lastminute",
@@ -92,9 +92,12 @@
       "escalas_volta": "1 em BOG",
       "duracao_ida_min": 705,
       "duracao_volta_min": 1570,
-      "link": "https://www.lastminute.ie/msr/route/searching.do?departureAirport=SAO&arrivalAirport=CUN&outboundDay=25&outboundMonthYear=072026&returnDay=01&returnMonthYear=082026&adults=2&childs=2&infants=0&COBRANDED=LMNEN_LLMPROJECTEN&currency=EUR&url=search3.do&roundtrip=true&fareType=&requestId=767816102952904704&mac=767816102952904704SCHv01-286639883&acntb=flight&utm_term=SAOCUN&utm_campaign=results&utm_medium=meta_search&utm_source=LMNEN_LLMPROJECTEN&bf_subsource=-----WS0S02RS01&j=2305200&jC=2305200_EUR&cp=0",
+      "link": "https://www.lastminute.ie/msr/route/searching.do?departureAirport=SAO&arrivalAirport=CUN&outboundDay=25&outboundMonthYear=072026&returnDay=01&returnMonthYear=082026&adults=2&childs=2&infants=0&COBRANDED=LMNEN_LLMPROJECTEN&currency=EUR&url=search3.do&roundtrip=true&classFlight=Y&fareType=&requestId=767825510424610816&mac=767825510424610816SCHv01-286639883&acntb=flight&utm_term=SAOCUN&utm_campaign=results&utm_medium=meta_search&utm_source=LMNEN_LLMPROJECTEN&bf_subsource=-----WS0S02RS01&j=2305200&jC=2305200_EUR&cp=0",
       "cambio_eur_brl": 5.95,
-      "cambio_gbp_brl": 7.55
+      "cambio_gbp_brl": 7.55,
+      "kiwi_preco_min": 15159,
+      "kiwi_link": "https://on.kiwi.com/N8FZAh",
+      "hotel_top": "Krystal Cancun 4★ (88/100)"
     }
   ],
   "minimos_historicos": {
