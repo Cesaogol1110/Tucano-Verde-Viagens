@@ -6,6 +6,7 @@
       "preco_min_voo": 14815,
       "preco_medio_voo_top5": 15820,
       "preco_min_pacote": null,
+      "preco_min_hotel_noite": null,
       "fonte_min": "Kiwi",
       "companhia": "Avianca",
       "escalas_ida": "1 em BOG",
@@ -78,6 +79,23 @@
       "duracao_volta_min": 65,
       "link": "https://www.lastminute.ie/msr/route/searching.do?departureAirport=CGH&arrivalAirport=SDU&outboundDay=18&outboundMonthYear=042026&returnDay=21&returnMonthYear=042026&adults=2&childs=2&infants=0&COBRANDED=LMNEN_LLMPROJECTEN&currency=EUR&url=search3.do&roundtrip=true&classFlight=Y&fareType=",
       "cambio_eur_brl": 5.95
+    },
+    {
+      "rota_id": "sp-cun-jul2026",
+      "data": "2026-04-26",
+      "preco_min_voo": 13129,
+      "preco_medio_voo_top5": 13489,
+      "preco_min_pacote": 25371,
+      "preco_min_hotel_noite": 3624,
+      "fonte_min": "Lastminute",
+      "companhia": "GOL + Avianca",
+      "escalas_ida": "1 em BOG",
+      "escalas_volta": "1 em BOG",
+      "duracao_ida_min": 675,
+      "duracao_volta_min": 1570,
+      "link": "https://www.lastminute.ie/msr/route/searching.do?departureAirport=SAO&arrivalAirport=CUN&outboundDay=25&outboundMonthYear=072026&returnDay=01&returnMonthYear=082026&adults=2&childs=2&infants=0&COBRANDED=LMNEN_LLMPROJECTEN&currency=EUR&url=search3.do&roundtrip=true&classFlight=Y&fareType=&requestId=767814202492934144&mac=767814202492934144SCHv012076351889&acntb=flight&utm_term=SAOCUN&utm_campaign=results&utm_medium=meta_search&utm_source=LMNEN_LLMPROJECTEN&bf_subsource=-----WS0S02RS01&j=2206500&jC=2206500_EUR&cp=0",
+      "cambio_eur_brl": 5.95,
+      "cambio_gbp_brl": 7.55
     }
   ],
   "minimos_historicos": {
